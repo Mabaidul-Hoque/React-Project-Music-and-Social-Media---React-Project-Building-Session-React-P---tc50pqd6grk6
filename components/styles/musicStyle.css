@@ -1,0 +1,15 @@
+
+.music-card-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: baseline;
+    
+}
+#music-card:hover #icon{
+    visibility: visible;
+}
+
+#icon{
+    visibility: hidden;
+}
