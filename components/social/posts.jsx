@@ -1,5 +1,5 @@
 "use client";
-import { fetchPosts } from "@/apis/posts";
+import { fetchPosts } from "@/Apis/posts";
 import { useEffect, useState } from "react";
 import { Post } from "./post";
 import { AuthenticationModal } from "./authentication-modal";

@@ -1,6 +1,6 @@
 "use client";
 
-import { fetchMusicList } from "@/apis/music";
+import { fetchMusicList } from "@/Apis/music";
 import { MusicCard } from "./music-card";
 import { useCallback, useEffect, useRef, useState } from "react";
 

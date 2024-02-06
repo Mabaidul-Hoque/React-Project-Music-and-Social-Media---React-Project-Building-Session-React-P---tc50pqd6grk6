@@ -1,4 +1,4 @@
-import { fetchComments, likePost } from "@/apis/posts";
+import { fetchComments, likePost } from "@/Apis/posts";
 import { TokenContext } from "@/app/layout";
 import { useContext, useState } from "react";
 import { Comment } from "./comment";
