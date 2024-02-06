@@ -1,12 +1,14 @@
-import Image from "next/image";
-import styles from "./page.module.css";
-import MusicCardsList from "../components/music-cards-list";
+"use client";
+import { MusicCardsList } from "@/components/music-cards";
+import { MusicPlayer } from "@/components/music-player";
+import { useState } from "react";
 
 export default function Home() {
+  const [currentMusic, setCurrentMusic] = useState();
   return (
     <>
-      <MusicCardsList />
-      {/* <MusicPlayer /> */}
+      <MusicCardsList setCurrentMusic={setCurrentMusic} />
+      <MusicPlayer currentMusic={currentMusic} />
     </>
   );
 }
