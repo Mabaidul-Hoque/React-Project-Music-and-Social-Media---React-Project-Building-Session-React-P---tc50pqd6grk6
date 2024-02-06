@@ -1,6 +1,6 @@
 "use client";
 
-import { signup } from "@/apis/user";
+import { signup } from "@/Apis/user";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import { TokenContext } from "../layout";
