@@ -2,6 +2,7 @@ import { fetchComments, likePost } from "@/Apis/posts";
 import { TokenContext } from "@/app/layout";
 import { useContext, useState } from "react";
 import { Comment } from "./comment";
+import { Paper, Stack, Typography } from "@mui/material";
 
 export function Post({ post, setShowModal }) {
   const { token } = useContext(TokenContext);
@@ -27,96 +28,109 @@ export function Post({ post, setShowModal }) {
     }
   };
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        padding: 20,
-        border: "1px solid black",
-        gap: 20,
-        width: 500,
+    <Paper
+      sx={{
+        width: "50vw",
+        maxheight: "50vh",
+        boxShadow: "none",
       }}
     >
-      <div
-        style={{
-          display: "flex",
-          padding: 10,
-          gap: 20,
+      <Stack
+        alignItems={"center"}
+        p={2}
+        sx={{
+          height: "100%",
+          bgcolor: "#393939",
+          color: "#FFFFFF",
+          border: "1px solid black",
+          borderRadius: "10px",
+          "&:hover": {
+            borderColor: "#FFFFFF",
+          },
         }}
       >
-        <img
-          style={{
-            width: 50,
-            height: 50,
-            borderRadius: "50%",
-          }}
-          src={post.author.profileImage}
-        />
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 20,
-          }}
-        >
-          <h1>{post.title}</h1>
-          <h4>By: {post.author.name}</h4>
-        </div>
-      </div>
-      <h3>{post.content}</h3>
-      <div
-        style={{
-          display: "flex",
-          padding: 10,
-          justifyContent: "space-between",
-          width: "100%",
-          alignItems: "center",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            gap: 10,
-            alignItems: "center",
-          }}
-        >
+        <Stack mb={3} flexDirection={"row"} gap={2} alignItems={"center"}>
           <img
             style={{
               width: 50,
               height: 50,
               borderRadius: "50%",
             }}
-            src={post.channel.image}
+            src={post.author.profileImage}
           />
-          <h4>Channel: {post.channel.name}</h4>
-        </div>
-        <h4
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 20,
+            }}
+          >
+            <Typography textAlign={"center"} variant="h5">
+              {post.title}
+            </Typography>
+            <Typography textAlign={"center"}>By: {post.author.name}</Typography>
+          </div>
+        </Stack>
+
+        <Typography textAlign={"center"} variant="h6">
+          {post.content}
+        </Typography>
+
+        <div
           style={{
-            cursor: "pointer",
+            display: "flex",
+            padding: 10,
+            justifyContent: "space-between",
+            width: "100%",
+            alignItems: "center",
           }}
-          onClick={onLike}
         >
-          {" "}
-          Likes:{likes}{" "}
-        </h4>{" "}
-        <h4
-          style={{
-            cursor: "pointer",
-          }}
-          onClick={onComment}
-        >
-          Comments:{post.commentCount}
-        </h4>
-      </div>
-      {comments.length > 0 && (
-        <div>
-          <h3>Comments:</h3>
-          {comments.map((comment) => (
-            <Comment key={comment._id} comment={comment} />
-          ))}
+          <div
+            style={{
+              display: "flex",
+              gap: 10,
+              alignItems: "center",
+            }}
+          >
+            <img
+              style={{
+                width: 50,
+                height: 50,
+                borderRadius: "50%",
+              }}
+              src={post.channel.image}
+            />
+            <h4>Channel: {post.channel.name}</h4>
+          </div>
+          <Stack flexDirection={"row"} gap={2}>
+            <Typography
+              style={{
+                cursor: "pointer",
+              }}
+              onClick={onLike}
+            >
+              {" "}
+              Likes:{likes}{" "}
+            </Typography>{" "}
+            <Typography
+              style={{
+                cursor: "pointer",
+              }}
+              onClick={onComment}
+            >
+              Comments:{post.commentCount}
+            </Typography>
+          </Stack>
         </div>
-      )}
-    </div>
+        {comments.length > 0 && (
+          <div>
+            <h3>Comments:</h3>
+            {comments.map((comment) => (
+              <Comment key={comment._id} comment={comment} />
+            ))}
+          </div>
+        )}
+      </Stack>
+    </Paper>
   );
 }

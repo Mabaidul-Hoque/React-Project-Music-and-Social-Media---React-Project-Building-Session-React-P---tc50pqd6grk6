@@ -4,6 +4,7 @@ import "./globals.css";
 
 import { createContext, useState } from "react";
 import { Header } from "@/components/header";
+import { Box } from "@mui/material";
 
 export const TokenContext = createContext();
 
@@ -13,23 +14,12 @@ export default function RootLayout({ children }) {
     <html>
       <body>
         <TokenContext.Provider value={{ token, setToken }}>
-          <div style={style.navbar_section}>
+          <div>
             <Header />
           </div>
-          <div style={style.main_section}>{children}</div>
+          <Box>{children}</Box>
         </TokenContext.Provider>
       </body>
     </html>
   );
 }
-
-const style = {
-  // navbar_section: {
-  //   width: "100%",
-  //   padding: "0 20px",
-  // },
-  main_section: {
-    width: "90%",
-    margin: "0 auto",
-  },
-};
