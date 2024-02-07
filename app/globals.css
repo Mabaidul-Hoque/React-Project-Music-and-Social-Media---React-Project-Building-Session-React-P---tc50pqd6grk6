@@ -87,12 +87,7 @@ body {
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background-color: #393939;
 }
 
 a {
@@ -100,11 +95,6 @@ a {
   text-decoration: none;
 }
 
-#header {
-  height: 64px;
-  background-color: black;
-  width: 100%;
-}
 
 #music-card:hover #play-icon-container {
   visibility: visible;

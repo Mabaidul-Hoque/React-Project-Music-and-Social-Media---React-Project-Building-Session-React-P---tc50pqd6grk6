@@ -2,12 +2,14 @@ import { fetchComments, likePost } from "@/Apis/posts";
 import { TokenContext } from "@/app/layout";
 import { useContext, useState } from "react";
 import { Comment } from "./comment";
-import { Paper, Stack, Typography } from "@mui/material";
+import { Box, Paper, Stack, Typography } from "@mui/material";
 
 export function Post({ post, setShowModal }) {
   const { token } = useContext(TokenContext);
   const [likes, setLikes] = useState(post.likeCount);
   const [comments, setComments] = useState([]);
+  const [isComment, setIsComment] = useState(false);
+
   const onLike = async () => {
     if (!token) {
       setShowModal(true);
@@ -21,6 +23,7 @@ export function Post({ post, setShowModal }) {
     }
   };
   const onComment = async () => {
+    setIsComment((prev) => !prev);
     if (!token) {
       setShowModal(true);
     } else {
@@ -122,13 +125,23 @@ export function Post({ post, setShowModal }) {
             </Typography>
           </Stack>
         </div>
-        {comments.length > 0 && (
-          <div>
-            <h3>Comments:</h3>
-            {comments.map((comment) => (
-              <Comment key={comment._id} comment={comment} />
-            ))}
-          </div>
+        {isComment ? (
+          <Stack>
+            <Typography variant="h5" mb={2} textAlign={"center"}>
+              Comments:
+            </Typography>
+            <Box border={"1px solid #FFFFFF"} p={2}>
+              <Stack>
+                <Stack>
+                  {comments.map((comment) => (
+                    <Comment key={comment._id} comment={comment} />
+                  ))}
+                </Stack>
+              </Stack>
+            </Box>
+          </Stack>
+        ) : (
+          ""
         )}
       </Stack>
     </Paper>

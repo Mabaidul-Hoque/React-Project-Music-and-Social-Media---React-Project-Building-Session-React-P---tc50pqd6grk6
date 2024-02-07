@@ -2,9 +2,10 @@
 
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
-import { TokenContext } from "../layout"; 
+import { TokenContext } from "../layout";
 import { signin } from "@/Apis/user";
 import Link from "next/link";
+import "../../components/styles/loginSignup.css";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
@@ -33,54 +34,44 @@ export default function SignIn() {
     }
   }, [token]);
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        padding: 20,
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          width: 400,
-          gap: 10,
-        }}
-      >
-        <label>Email</label>
-        <input
-          onChange={(e) => {
-            setEmail(e.target.value);
-          }}
-          type="email"
-          value={email}
-        />
-        <label>Password</label>
-        <input
-          onChange={(e) => {
-            setPassword(e.target.value);
-          }}
-          type="password"
-          value={password}
-        />
-        <button
-          style={{
-            marginTop: 20,
-            border: "none",
-            padding: 10,
-            backgroundColor: "black",
-            color: "white",
-            fontSize: 20,
-            marginBottom: 20,
-          }}
-          onClick={onSubmit}
-        >
-          Sign In
-        </button>
-        <h4>
-          New User? <Link href={"/signup"}>Sign Up</Link>
-        </h4>
+    <div class="container">
+      <div class="wrapper">
+        <div class="title">
+          <span>Login Form</span>
+        </div>
+        <form action="#">
+          <div class="row">
+            <i class="fas fa-user"></i>
+            <input
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
+              type="email"
+              value={email}
+              placeholder="Email or Phone"
+              required
+            />
+          </div>
+          <div class="row">
+            <i class="fas fa-lock"></i>
+            <input
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
+              type="password"
+              value={password}
+              placeholder="Password"
+              required
+            />
+          </div>
+
+          <div class="row button">
+            <input onClick={onSubmit} type="submit" value="Login" />
+          </div>
+          <div class="signup-link">
+            New User? <Link href={"/signup"}>Sign Up</Link>
+          </div>
+        </form>
       </div>
     </div>
   );

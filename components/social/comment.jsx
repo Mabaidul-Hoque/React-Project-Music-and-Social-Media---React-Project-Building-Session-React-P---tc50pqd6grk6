@@ -1,13 +1,9 @@
+import { Box, Typography } from "@mui/material";
+
 export function Comment({ comment }) {
   return (
-    <div
-      style={{
-        marginTop: 20,
-        border: "1px solid black",
-        padding: 20,
-      }}
-    >
-      <h4>{comment.content}</h4>
-    </div>
+    <Box mt={2} p={2} border={"1px solid #FFFFFF"}>
+      <Typography textAlign={"center"}>{comment.content}</Typography>
+    </Box>
   );
 }

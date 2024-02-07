@@ -1,13 +1,68 @@
 "use client";
 import Link from "next/link";
 import { TokenContext } from "@/app/layout";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import "./header.css";
+import HomeSharpIcon from "@mui/icons-material/HomeSharp";
+import ConnectWithoutContactIcon from "@mui/icons-material/ConnectWithoutContact";
+import {
+  Box,
+  Button,
+  Stack,
+  TextField,
+  Typography,
+  styled,
+} from "@mui/material";
+import HeadphonesIcon from "@mui/icons-material/Headphones";
+import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
+import { useMusicContext } from "@/context/MusicDataProvider";
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 
+const CustomButton = styled(Button)({
+  width: "42px",
+  height: "42px",
+  minWidth: "20px",
+  backgroundColor: "#FFFFFF",
+  borderRadius: "50%",
+  "&:hover": {
+    backgroundColor: "#FFFFFF",
+  },
+});
+
+const CustomInput = styled("input")({
+  width: "20vw",
+  height: "45px",
+  border: "none",
+  borderRadius: "20px",
+  paddingLeft: "20px",
+  fontSize: "18px",
+  outlineColor: "#FFFFFF",
+});
 export function Header() {
+  const [searchInput, setSearchInput] = useState("");
   const { token, setToken } = useContext(TokenContext);
+
   const router = useRouter();
+
+  const { updateMusicList, musicPage, setMusicPage, musicList, setMusicList } =
+    useMusicContext().musicVal;
+
+  // useEffect(() => {
+  //   handleSearch();
+  // }, [musicList]);
+
+  const handleHomeClick = () => {
+    updateMusicList();
+  };
+  const handleSearch = () => {
+    console.log("search clicked");
+    const filteredList = musicList.filter((list) =>
+      list.title.toLocaleLowerCase().includes(searchInput.toLocaleLowerCase())
+    );
+    setMusicList(filteredList);
+  };
+
   const onLoginLogout = () => {
     if (token) {
       localStorage.removeItem("token");
@@ -17,31 +72,74 @@ export function Header() {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: 20,
-      }}
-      id="header"
+    <Stack
+      flexDirection={"row"}
+      justifyContent={"space-between"}
+      alignItems={"center"}
+      p={2}
+      sx={{ width: "92%", margin: "0 auto" }}
     >
-      <img src="https://e7.pngegg.com/pngimages/711/190/png-clipart-soundcloud-computer-icons-social-media-logo-music-sound-of-colors-company-internet.png" />
-      <div
-        style={{
-          color: "white",
-          fontSize: 24,
-          gap: 20,
-          display: "flex",
-        }}
-      >
-        <Link href={"/"}>Home</Link>
-        <Link href={"/social"}>Social</Link>
-        <Link href={"/library"}>Library</Link>
-      </div>
-      <button className="login-btn" onClick={onLoginLogout}>
-        {token ? "Logout" : "Login"}
-      </button>
-    </div>
+      <img
+        width={"80px"}
+        height={"40px"}
+        src="https://e7.pngegg.com/pngimages/711/190/png-clipart-soundcloud-computer-icons-social-media-logo-music-sound-of-colors-company-internet.png"
+      />
+
+      <Link onClick={handleHomeClick} href={"/"}>
+        <Stack flexDirection={"row"} alignItems={"center"} gap={0.5}>
+          <Box mb={-0.6}>
+            <HomeSharpIcon htmlColor="#FFFFFF" fontSize="medium" />
+          </Box>
+          <Typography variant="h5" color={"#FFFFFF"}>
+            Home
+          </Typography>
+        </Stack>
+      </Link>
+      <Link href={"/social"}>
+        <Stack flexDirection={"row"} alignItems={"center"} gap={0.5}>
+          <Box mb={-0.6}>
+            <ConnectWithoutContactIcon htmlColor="#FFFFFF" fontSize="medium" />
+          </Box>
+          <Typography variant="h5" color={"#FFFFFF"}>
+            Social
+          </Typography>
+        </Stack>
+      </Link>
+      <Link href={"/library"}>
+        {" "}
+        <Stack flexDirection={"row"} alignItems={"center"} gap={0.5}>
+          <Box mb={-0.6}>
+            <HeadphonesIcon htmlColor="#FFFFFF" fontSize="medium" />
+          </Box>
+          <Typography variant="h5" color={"#FFFFFF"}>
+            Library
+          </Typography>
+        </Stack>
+      </Link>
+
+      <Stack flexDirection={"row"} alignItems={"center"}>
+        <CustomInput
+          id="outlined-basic"
+          placeholder="Search songs"
+          onChange={(e) => setSearchInput(e.target.value)}
+        />
+        <CustomButton sx={{ marginLeft: "-50px" }} onClick={handleSearch}>
+          <SearchOutlinedIcon htmlColor="gray" />
+        </CustomButton>
+      </Stack>
+      <Stack flexDirection={"row"} gap={2} alignItems={"center"}>
+        <CustomButton className="login-btn">
+          <PersonOutlineOutlinedIcon fontSize="medium" htmlColor="gray" />
+        </CustomButton>
+        <Typography
+          variant="h6"
+          color={"#FFFFFF"}
+          onClick={onLoginLogout}
+          sx={{ cursor: "pointer" }}
+        >
+          {token ? "Logout" : "Login"}
+        </Typography>
+      </Stack>
+    </Stack>
   );
 }

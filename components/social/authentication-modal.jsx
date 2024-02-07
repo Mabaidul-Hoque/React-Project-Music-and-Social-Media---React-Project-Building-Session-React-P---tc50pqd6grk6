@@ -1,36 +1,102 @@
-import { useRouter } from "next/navigation";
+// const CustomPaper = styled(Paper)({
+//   position: "fixed",
+//   width: 300,
+//   height: 200,
+//   border: "none",
+//   backgroundColor: "white",
+//   padding: 20,
+//   display: "flex",
+//   flexDirection: "column",
+//   alignItems: "center",
+//   gap: 20,
+//   top: "calc(50vh - 100px)",
+//   left: "calc(50vw - 150px)",
+// });
 
-export function AuthenticationModal({ setShowModal }) {
+import * as React from "react";
+import { useRouter } from "next/navigation";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Modal from "@mui/material/Modal";
+import { Stack } from "@mui/material";
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
+
+export function AuthenticationModal({ showModal, setShowModal }) {
   const router = useRouter();
+
+  const handleOpen = () => setShowModal(true);
+  const handleClose = () => setShowModal(false);
+
   return (
-    <div
-      style={{
-        position: "fixed",
-        width: 300,
-        height: 200,
-        border: "1px solid black",
-        backgroundColor: "white",
-        padding: 20,
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 20,
-        top: "calc(50vh - 100px)",
-        left: "calc(50vw - 150px)",
-      }}
-    >
-      <h3>You need to login to like or comment on this post</h3>
-      <h4>
-        If you don't have any account signup here{" "}
-        <button
-          onClick={() => {
-            router.push("/signup");
-          }}
-        >
-          Sign up
-        </button>
-      </h4>
-      <button onClick={() => setShowModal(false)}>Close</button>
+    <div>
+      <Modal
+        open={showModal}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Stack flexDirection={"row"} justifyContent={"flex-end"}>
+            <Button
+              sx={{
+                marginTop: "-1.5rem",
+                textTransform: "none",
+                color: "tomato",
+              }}
+              onClick={handleClose}
+            >
+              close
+            </Button>
+          </Stack>
+          <Typography
+            id="modal-modal-title"
+            variant="h6"
+            component="h2"
+            sx={{
+              fontFamily: "-moz-initial",
+              textAlign: "center",
+              fontWeight: "600",
+              fontSize: "20px",
+            }}
+          >
+            You need to login to like or comment on this post
+          </Typography>
+          <Typography
+            id="modal-modal-description"
+            sx={{
+              mt: 2.5,
+              mb: 1,
+              fontWeight: "600",
+              fontSize: "14px",
+              textAlign: "center",
+            }}
+          >
+            If you don't have any account signup here
+          </Typography>
+          <Stack flexDirection={"row"} justifyContent={"center"}>
+            <Button
+              variant="contained"
+              onClick={() => {
+                router.push("/signup");
+              }}
+            >
+              Sign up
+            </Button>
+          </Stack>
+        </Box>
+      </Modal>
     </div>
   );
 }

@@ -223,7 +223,8 @@ const styles = {
     bottom: 0,
     left: 0,
     width: "100%",
-    backgroundColor: "orange",
+    backgroundColor: "#FF894B",
+
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
