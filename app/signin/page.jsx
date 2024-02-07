@@ -6,6 +6,7 @@ import { TokenContext } from "../layout";
 import { signin } from "@/Apis/user";
 import Link from "next/link";
 import "../../components/styles/loginSignup.css";
+import { Stack } from "@mui/material";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
@@ -18,7 +19,7 @@ export default function SignIn() {
         email,
         password,
       });
-      if (data.status === "success") {
+      if (data && data?.status === "success") {
         alert("User Signed in successfully");
         localStorage.setItem("token", data.token);
         setToken(data.token);
@@ -34,45 +35,42 @@ export default function SignIn() {
     }
   }, [token]);
   return (
-    <div class="container">
-      <div class="wrapper">
-        <div class="title">
-          <span>Login Form</span>
+    <>
+      <Stack flexDirection={"row"} justifyContent={"center"} mt={4} mb={4}>
+        <div class="login-form">
+          <div class="login-text">LOGIN</div>
+          <form>
+            <div class="field">
+              <div class="fas fa-envelope"></div>
+              <input
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                }}
+                type="email"
+                value={email}
+                placeholder="Email or Phone"
+                // required
+              />
+            </div>
+            <div class="field">
+              <div class="fas fa-lock"></div>
+              <input
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                }}
+                type="password"
+                value={password}
+                placeholder="Password"
+                // required
+              />
+            </div>
+            <button onClick={onSubmit}>LOGIN</button>
+            <div class="link">
+              New User? <Link href={"/signup"}>Sign Up</Link>
+            </div>
+          </form>
         </div>
-        <form action="#">
-          <div class="row">
-            <i class="fas fa-user"></i>
-            <input
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
-              type="email"
-              value={email}
-              placeholder="Email or Phone"
-              required
-            />
-          </div>
-          <div class="row">
-            <i class="fas fa-lock"></i>
-            <input
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
-              type="password"
-              value={password}
-              placeholder="Password"
-              required
-            />
-          </div>
-
-          <div class="row button">
-            <input onClick={onSubmit} type="submit" value="Login" />
-          </div>
-          <div class="signup-link">
-            New User? <Link href={"/signup"}>Sign Up</Link>
-          </div>
-        </form>
-      </div>
-    </div>
+      </Stack>
+    </>
   );
 }

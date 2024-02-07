@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import { TokenContext } from "../layout";
 import Link from "next/link";
+import { Stack } from "@mui/material";
 
 export default function SignUp() {
   // const [userInfo, setUserInfo] = useState({
@@ -42,63 +43,52 @@ export default function SignUp() {
     }
   }, [token]);
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        padding: 20,
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          width: 400,
-          gap: 10,
-        }}
-      >
-        <label>Name</label>
-        <input
-          onChange={(e) => {
-            setName(e.target.value);
-          }}
-          type="text"
-          value={name}
-        />
-        <label>Email</label>
-        <input
-          onChange={(e) => {
-            setEmail(e.target.value);
-          }}
-          type="email"
-          value={email}
-        />
-        <label>Password</label>
-        <input
-          onChange={(e) => {
-            setPassword(e.target.value);
-          }}
-          type="password"
-          value={password}
-        />
-        <button
-          style={{
-            marginTop: 20,
-            border: "none",
-            padding: 10,
-            backgroundColor: "black",
-            color: "white",
-            fontSize: 20,
-            marginBottom: 20,
-          }}
-          onClick={onSubmit}
-        >
-          Sign up
-        </button>
-        <h4>
-          Already Registered? <Link href={"/signin"}>Sign In</Link>
-        </h4>
-      </div>
-    </div>
+    <>
+      <Stack flexDirection={"row"} justifyContent={"center"} mt={4} mb={4}>
+        <div class="login-form">
+          <div class="login-text">SIGNUP</div>
+          <form>
+            <div class="field">
+              <div class="fas fa-envelope"></div>
+              <input
+                onChange={(e) => {
+                  setName(e.target.value);
+                }}
+                type="text"
+                value={name}
+                placeholder="Name"
+                required
+              />
+            </div>
+            <div class="field">
+              <div class="fas fa-envelope"></div>
+              <input
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                }}
+                type="email"
+                value={email}
+                placeholder="Email or Phone"
+              />
+            </div>
+            <div class="field">
+              <div class="fas fa-lock"></div>
+              <input
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                }}
+                type="password"
+                value={password}
+                placeholder="Password"
+              />
+            </div>
+            <button onClick={onSubmit}>SIGNUP</button>
+            <div class="link">
+              Already Registered? <Link href={"/signin"}>Sign In</Link>
+            </div>
+          </form>
+        </div>
+      </Stack>
+    </>
   );
 }
