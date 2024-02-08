@@ -12,8 +12,11 @@ export const useMusicContext = () => {
 };
 
 const MusicDataProvider = ({ children }) => {
+  const [currentMusic, setCurrentMusic] = useState();
   const [musicList, setMusicList] = useState([]);
   const [musicPage, setMusicPage] = useState(1);
+  const [favSongs, setFavSongs] = useState([]);
+  const [isFav, setIsFav] = useState(false);
 
   const updateMusicList = useCallback(async () => {
     const musicList = await fetchMusicList(musicPage, 10);
@@ -21,22 +24,22 @@ const MusicDataProvider = ({ children }) => {
     setMusicList(musicList);
   }, [musicPage]);
 
-  const handleChange = (event, value) => {
-    setMusicPage(value);
-  };
-
   const musicData = {
     musicVal: {
-      handleChange,
       updateMusicList,
       setMusicPage,
       musicPage,
       musicList,
       setMusicList,
+      currentMusic,
+      setCurrentMusic,
     },
-    // searchVal: {
-    //   handleSearch,
-    // },
+    favData: {
+      favSongs,
+      setFavSongs,
+      isFav,
+      setIsFav,
+    },
   };
   return (
     <MusicContext.Provider value={musicData}>{children}</MusicContext.Provider>

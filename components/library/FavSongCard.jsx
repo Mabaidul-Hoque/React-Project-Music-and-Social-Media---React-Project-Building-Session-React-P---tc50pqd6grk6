@@ -1,10 +1,8 @@
-import { useMusicContext } from "@/context/MusicDataProvider";
 import { Paper, Stack, Typography } from "@mui/material";
 import Image from "next/image";
+import React from "react";
 
-export function MusicCard({ music, onClick }) {
-  const { favSongs, setFavSongs, isFav, setIsFav } = useMusicContext().favData;
-
+const FavSongCard = ({ favSong }) => {
   return (
     <Paper
       sx={{
@@ -22,14 +20,11 @@ export function MusicCard({ music, onClick }) {
       }}
       id="music-card"
     >
-      <img id="music-thumbnail" style={styles.image} src={music.thumbnail} />
+      <img id="music-thumbnail" style={styles.image} src={favSong.thumbnail} />
 
       <div id="play-icon-container" style={styles.play_container}>
         <Image
-          onClick={() => {
-            setIsFav(false);
-            onClick();
-          }}
+          //   onClick={onClick}
           src={"https://www.svgrepo.com/show/111229/play-button.svg"}
           alt="play"
           height={50}
@@ -38,15 +33,15 @@ export function MusicCard({ music, onClick }) {
       </div>
       <Stack pl={0.5} pr={0.5} mt={1} gap={0.5} textAlign={"center"}>
         <Typography variant="h5" fontSize={"20px"}>
-          {music.title}
+          {favSong.title}
         </Typography>
         <Typography variant="body2" fontSize={"12px"}>
-          {music.artist.map((artist) => artist.name).join(" & ")}
+          {favSong.artist.map((artist) => artist.name).join(" & ")}
         </Typography>
       </Stack>
     </Paper>
   );
-}
+};
 
 const styles = {
   image: {
@@ -63,3 +58,5 @@ const styles = {
     height: 100,
   },
 };
+
+export default FavSongCard;

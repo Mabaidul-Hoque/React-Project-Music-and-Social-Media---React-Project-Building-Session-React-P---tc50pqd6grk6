@@ -37,11 +37,11 @@ export default function SignIn() {
   return (
     <>
       <Stack flexDirection={"row"} justifyContent={"center"} mt={4} mb={4}>
-        <div class="login-form">
-          <div class="login-text">LOGIN</div>
+        <div className="login-form">
+          <div className="login-text">LOGIN</div>
           <form>
-            <div class="field">
-              <div class="fas fa-envelope"></div>
+            <div className="field">
+              <div className="fas fa-envelope"></div>
               <input
                 onChange={(e) => {
                   setEmail(e.target.value);
@@ -52,8 +52,8 @@ export default function SignIn() {
                 // required
               />
             </div>
-            <div class="field">
-              <div class="fas fa-lock"></div>
+            <div className="field">
+              <div className="fas fa-lock"></div>
               <input
                 onChange={(e) => {
                   setPassword(e.target.value);
@@ -65,7 +65,7 @@ export default function SignIn() {
               />
             </div>
             <button onClick={onSubmit}>LOGIN</button>
-            <div class="link">
+            <div className="link">
               New User? <Link href={"/signup"}>Sign Up</Link>
             </div>
           </form>

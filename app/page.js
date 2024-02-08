@@ -5,11 +5,10 @@ import { Stack } from "@mui/material";
 import { useState } from "react";
 
 export default function Home() {
-  const [currentMusic, setCurrentMusic] = useState();
   return (
     <Stack>
-      <MusicCardsList setCurrentMusic={setCurrentMusic} />
-      <MusicPlayer currentMusic={currentMusic} />
+      <MusicCardsList />
+      <MusicPlayer />
     </Stack>
   );
 }

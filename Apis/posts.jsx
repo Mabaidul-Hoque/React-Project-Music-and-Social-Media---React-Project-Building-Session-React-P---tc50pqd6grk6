@@ -8,7 +8,14 @@ export async function fetchPosts(limit, page) {
 }
 
 export async function likePost(postId) {
-  const token = localStorage.getItem("token");
+  if (typeof localStorage !== "undefined") {
+    // Your code that uses localStorage
+    const token = localStorage.getItem("token");
+  } else {
+    // Handle the case where localStorage is not available
+    throw new Error("something is wrong local storage");
+  }
+
   const res = await axios.post(
     `https://academics.newtonschool.co/api/v1/quora/like/${postId}`,
     {},

@@ -6,12 +6,14 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Pagination, Stack } from "@mui/material";
 import { useMusicContext } from "@/context/MusicDataProvider";
 
-export function MusicCardsList({ setCurrentMusic }) {
-  // const [musicList, setMusicList] = useState([]);
-  // const [musicPage, setMusicPage] = useState(1);
-
-  const { handleChange, updateMusicList, musicPage, musicList } =
-    useMusicContext().musicVal;
+export function MusicCardsList() {
+  const {
+    setMusicPage,
+    musicPage,
+    updateMusicList,
+    musicList,
+    setCurrentMusic,
+  } = useMusicContext().musicVal;
 
   // const updateMusicList = useCallback(async () => {
   //   const musicList = await fetchMusicList(musicPage, 10);
@@ -23,9 +25,9 @@ export function MusicCardsList({ setCurrentMusic }) {
     updateMusicList();
   }, [musicPage]);
 
-  // const handleChange = (event, value) => {
-  //   setMusicPage(value);
-  // };
+  const handleChange = (event, value) => {
+    setMusicPage(value);
+  };
 
   return (
     <Stack pt={4}>
@@ -48,7 +50,7 @@ export function MusicCardsList({ setCurrentMusic }) {
       </Stack>
       <Stack alignItems={"center"} mt={6} mb={6}>
         <Pagination
-          count={50}
+          count={musicList.length < 10 ? 1 : 50}
           color={"primary"}
           bgcolor={"white"}
           page={musicPage}

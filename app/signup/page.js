@@ -28,7 +28,26 @@ export default function SignUp() {
       });
       if (data.status === "success") {
         alert("User registered successfully");
-        localStorage.setItem("token", data.token);
+
+        //  use incase of useeffect
+        // if (typeof window !== 'undefined') {
+
+        //   // Code that uses localStorage
+
+        //   localStorage.setItem('exampleKey', 'exampleValue');
+
+        //   }
+
+        //   }, []);
+
+        if (typeof localStorage !== "undefined") {
+          // Your code that uses localStorage
+          localStorage.setItem("token", data.token);
+        } else {
+          // Handle the case where localStorage is not available
+          throw new Error("something is wrong local storage");
+        }
+
         setToken(data.token);
         router.push("/");
       }
@@ -45,11 +64,11 @@ export default function SignUp() {
   return (
     <>
       <Stack flexDirection={"row"} justifyContent={"center"} mt={4} mb={4}>
-        <div class="login-form">
-          <div class="login-text">SIGNUP</div>
+        <div className="login-form">
+          <div className="login-text">SIGNUP</div>
           <form>
-            <div class="field">
-              <div class="fas fa-envelope"></div>
+            <div className="field">
+              <div className="fas fa-envelope"></div>
               <input
                 onChange={(e) => {
                   setName(e.target.value);
@@ -60,8 +79,8 @@ export default function SignUp() {
                 required
               />
             </div>
-            <div class="field">
-              <div class="fas fa-envelope"></div>
+            <div className="field">
+              <div className="fas fa-envelope"></div>
               <input
                 onChange={(e) => {
                   setEmail(e.target.value);
@@ -71,8 +90,8 @@ export default function SignUp() {
                 placeholder="Email or Phone"
               />
             </div>
-            <div class="field">
-              <div class="fas fa-lock"></div>
+            <div className="field">
+              <div className="fas fa-lock"></div>
               <input
                 onChange={(e) => {
                   setPassword(e.target.value);
@@ -83,7 +102,7 @@ export default function SignUp() {
               />
             </div>
             <button onClick={onSubmit}>SIGNUP</button>
-            <div class="link">
+            <div className="link">
               Already Registered? <Link href={"/signin"}>Sign In</Link>
             </div>
           </form>

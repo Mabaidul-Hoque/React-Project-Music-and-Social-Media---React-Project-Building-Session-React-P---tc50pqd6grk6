@@ -2,6 +2,7 @@
 
 import { TokenContext } from "@/app/layout";
 import {
+  Box,
   Button,
   Paper,
   Slider,
@@ -14,12 +15,16 @@ import { useRouter } from "next/navigation";
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import PlayCircleOutlineOutlinedIcon from "@mui/icons-material/PlayCircleOutlineOutlined";
 import PauseCircleOutlineIcon from "@mui/icons-material/PauseCircleOutline";
+import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
+import { useMusicContext } from "@/context/MusicDataProvider";
+import FavAddRemove from "./FavAddRemove";
 
 const PrettoSlider = styled(Slider)({
   color: "#0C936C",
   width: "15vw",
   height: 8,
-  marginRight: "100px",
+
   "& .MuiSlider-track": {
     border: "none",
   },
@@ -37,16 +42,16 @@ const PrettoSlider = styled(Slider)({
   },
 });
 
-export function MusicPlayer({ currentMusic }) {
+export function MusicPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [totalTime, setTotalTime] = useState(0);
   const [volume, setVolume] = useState(1);
   const currentTimeInterval = useRef();
   const audioRef = useRef();
-
   const { token } = useContext(TokenContext);
   const router = useRouter();
+  const { currentMusic } = useMusicContext().musicVal;
 
   const getTimeInString = (time) => {
     const minutes = String(parseInt(time / 60));
@@ -117,10 +122,6 @@ export function MusicPlayer({ currentMusic }) {
         </Typography>
       </Stack>
 
-      {/* <button onClick={playPause} style={styles.playPauseButton}>
-        {isPlaying ? "⏸️" : "▶️"}
-      </button> */}
-
       <Button
         onClick={playPause}
         sx={{
@@ -134,7 +135,7 @@ export function MusicPlayer({ currentMusic }) {
         )}
       </Button>
 
-      <Stack flexDirection={"row"} gap={1} mr={2}>
+      <Stack flexDirection={"row"} gap={1}>
         <Typography sx={{ fontWeight: "500", color: "#FFFFFF" }}>
           {getTimeInString(currentTime)}
         </Typography>
@@ -143,18 +144,6 @@ export function MusicPlayer({ currentMusic }) {
           {getTimeInString(totalTime)}
         </Typography>
       </Stack>
-
-      {/* <input
-        onChange={(e) => {
-          setCurrentTime(e.target.value);
-          audioRef.current.currentTime = e.target.value;
-        }}
-        type="range"
-        value={currentTime}
-        style={styles.slider}
-        min={0}
-        max={totalTime}
-      /> */}
 
       <PrettoSlider
         value={currentTime}
@@ -168,17 +157,7 @@ export function MusicPlayer({ currentMusic }) {
         }}
       />
 
-      {/* <input
-        onChange={(e) => {
-          setVolume(e.target.value);
-          audioRef.current.volume = e.target.value / 100;
-        }}
-        type="range"
-        value={volume}
-        style={styles.slider}
-        min={0}
-        max={100}
-      /> */}
+      <FavAddRemove currentMusic={currentMusic} />
 
       <Stack
         flexDirection={"row"}
@@ -203,16 +182,31 @@ export function MusicPlayer({ currentMusic }) {
       <audio ref={audioRef} src={currentMusic.audio_url} />
     </Paper>
   ) : (
-    <div style={styles.container}>
-      <h2>To play any music user must be logged in </h2>
-      <button
-        onClick={() => {
-          router.push("/signin");
-        }}
-      >
-        Sign In
-      </button>
-    </div>
+    <Stack
+      style={styles.container}
+      flexDirection={"row"}
+      justifyContent={"flex-start"}
+      pl={5}
+    >
+      <img
+        width={"80px"}
+        src={currentMusic.thumbnail}
+        alt={currentMusic.title}
+      />
+      <Typography variant="h4" color={"white"}>
+        Please sign up first
+      </Typography>
+      <Box mr={90}>
+        <Button
+          variant="contained"
+          onClick={() => {
+            router.push("/signup");
+          }}
+        >
+          Sign up here
+        </Button>
+      </Box>
+    </Stack>
   );
 }
 
@@ -224,10 +218,10 @@ const styles = {
     left: 0,
     width: "100%",
     backgroundColor: "#FF894B",
-
     display: "flex",
     alignItems: "center",
-    justifyContent: "space-between",
+    justifyContent: "flex-start",
+    gap: "20px",
   },
   thumbnail: {
     width: 100,

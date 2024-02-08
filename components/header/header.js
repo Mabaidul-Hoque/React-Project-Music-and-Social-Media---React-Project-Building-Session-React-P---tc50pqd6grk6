@@ -18,6 +18,7 @@ import HeadphonesIcon from "@mui/icons-material/Headphones";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import { useMusicContext } from "@/context/MusicDataProvider";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import { fetchSearchedSong } from "@/Apis/SearchApi";
 
 const CustomButton = styled(Button)({
   width: "42px",
@@ -55,12 +56,10 @@ export function Header() {
   const handleHomeClick = () => {
     updateMusicList();
   };
-  const handleSearch = () => {
-    console.log("search clicked");
-    const filteredList = musicList.filter((list) =>
-      list.title.toLocaleLowerCase().includes(searchInput.toLocaleLowerCase())
-    );
-    setMusicList(filteredList);
+  const handleSearch = async () => {
+    const filteredData = await fetchSearchedSong(searchInput);
+    // console.log("searched data", filteredData.data.data);
+    setMusicList(filteredData.data.data);
   };
 
   const onLoginLogout = () => {
@@ -121,7 +120,9 @@ export function Header() {
         <CustomInput
           id="outlined-basic"
           placeholder="Search songs"
+          value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
+          onFocus={() => setSearchInput("")}
         />
         <CustomButton sx={{ marginLeft: "-50px" }} onClick={handleSearch}>
           <SearchOutlinedIcon htmlColor="gray" />
