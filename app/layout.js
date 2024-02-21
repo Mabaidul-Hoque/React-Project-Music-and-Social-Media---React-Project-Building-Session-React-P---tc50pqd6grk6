@@ -6,6 +6,8 @@ import { createContext, useState } from "react";
 import { Header } from "@/components/header";
 import { Box, Stack } from "@mui/material";
 import MusicDataProvider from "@/context/MusicDataProvider";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 export const TokenContext = createContext();
 
@@ -54,6 +56,7 @@ export default function RootLayout({ children }) {
                 quisquam delectus laborum a, dolor itaque?
               </Stack>
             </footer>
+            <ToastContainer  />
           </TokenContext.Provider>
         </MusicDataProvider>
       </body>

@@ -19,6 +19,7 @@ import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined
 import { useMusicContext } from "@/context/MusicDataProvider";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { fetchSearchedSong } from "@/Apis/SearchApi";
+import { toast } from "react-toastify";
 
 const CustomButton = styled(Button)({
   width: "42px",
@@ -67,6 +68,9 @@ export function Header() {
     if (token) {
       localStorage.removeItem("token");
       setToken();
+      toast.success("You have logged out", {
+        theme: "colored"
+      })
     }
     router.push("/signin");
   };

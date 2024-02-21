@@ -1,11 +1,13 @@
 "use client";
 
+import "../../components/styles/loginSignup.css";
 import { signup } from "@/Apis/user";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import { TokenContext } from "../layout";
 import Link from "next/link";
 import { Stack } from "@mui/material";
+import { toast } from "react-toastify";
 
 export default function SignUp() {
   // const [userInfo, setUserInfo] = useState({
@@ -19,52 +21,60 @@ export default function SignUp() {
   const router = useRouter();
   const { token, setToken } = useContext(TokenContext);
 
-  const onSubmit = async () => {
-    if (name && email && password) {
-      const data = await signup({
-        name,
-        email,
-        password,
-      });
-      if (data.status === "success") {
-        alert("User registered successfully");
-
-        //  use incase of useeffect
-        // if (typeof window !== 'undefined') {
-
-        //   // Code that uses localStorage
-
-        //   localStorage.setItem('exampleKey', 'exampleValue');
-
-        //   }
-
-        //   }, []);
-
-        if (typeof localStorage !== "undefined") {
-          // Your code that uses localStorage
-          localStorage.setItem("token", data.token);
-        } else {
-          // Handle the case where localStorage is not available
-          throw new Error("something is wrong local storage");
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    if (name !== "" && email !== "" && password !== "") {
+      if(regex.test(email)){
+        const data = await signup({ name, email, password});
+        if (data?.status === "success") {
+          toast.success("You have registered successfully", {
+            theme: "colored",
+          });
+  
+          //  use incase of useeffect
+          // if (typeof window !== 'undefined') {
+          //   // Code that uses localStorage
+          //   localStorage.setItem('exampleKey', 'exampleValue');
+          //   }
+          //   }, []);
+  
+          if (typeof localStorage !== "undefined") {
+            // Your code that uses localStorage
+            localStorage.setItem("token", data.token);
+          } else {
+            // Handle the case where localStorage is not available
+            throw new Error("something is wrong with the local storage");
+          }
+  
+          setToken(data.token);
+          router.push("/");
+        }else {
+          toast.warn("Already you have an account", {
+            theme: "colored"
+          })
         }
-
-        setToken(data.token);
-        router.push("/");
+      }else {
+        toast.error("Invalid email !", {
+          theme: "colored"
+        });
       }
     } else {
-      alert("Some field is missing or invalid");
+      toast.error("Fill all the input details !", {
+        theme: "colored",
+      });
     }
   };
 
-  useEffect(() => {
-    if (token) {
-      router.push("/");
-    }
-  }, [token]);
+  // useEffect(() => {
+  //   if (token) {
+  //     router.push("/");
+  //   }
+  // }, [token]);
   return (
     <>
       <Stack flexDirection={"row"} justifyContent={"center"} mt={4} mb={4}>
-        <div className="login-form">
+        <div className="signup-form">
           <div className="login-text">SIGNUP</div>
           <form>
             <div className="field">
@@ -87,7 +97,7 @@ export default function SignUp() {
                 }}
                 type="email"
                 value={email}
-                placeholder="Email or Phone"
+                placeholder="Email"
               />
             </div>
             <div className="field">
@@ -108,6 +118,7 @@ export default function SignUp() {
           </form>
         </div>
       </Stack>
+      
     </>
   );
 }

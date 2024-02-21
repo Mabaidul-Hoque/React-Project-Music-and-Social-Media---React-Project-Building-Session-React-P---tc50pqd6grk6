@@ -7,33 +7,51 @@ import { signin } from "@/Apis/user";
 import Link from "next/link";
 import "../../components/styles/loginSignup.css";
 import { Stack } from "@mui/material";
+import { toast } from "react-toastify";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
   const { token, setToken } = useContext(TokenContext);
-  const onSubmit = async () => {
-    if (email && password) {
-      const data = await signin({
-        email,
-        password,
-      });
-      if (data && data?.status === "success") {
-        alert("User Signed in successfully");
-        localStorage.setItem("token", data.token);
-        setToken(data.token);
-        router.push("/");
+
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    if (email !== "" && password !== "") {
+      if(regex.test(email)){
+        const data = await signin({ email, password });
+        if (data && data?.status === "success") {
+          toast.success("You have Signed in successfully", {
+            theme: "colored"
+          });
+          localStorage.setItem("token", data.token);
+          setToken(data.token);
+          router.push("/");
+        }else {
+          toast.error("Incorrect EmailId or Password", {
+            theme: "colored"
+          });
+        }
+      }else {
+        toast.error("Invalid email !", {
+          theme: "colored"
+        });
       }
+      
     } else {
-      alert("Some field is missing or invalid");
+      toast.error("Fill all the input details !", {
+        theme: "colored"
+      });
     }
   };
-  useEffect(() => {
-    if (token) {
-      router.push("/");
-    }
-  }, [token]);
+
+  // useEffect(() => {
+  //   if (token) {
+  //     router.push("/");
+  //   }
+  // }, [token]);
+
   return (
     <>
       <Stack flexDirection={"row"} justifyContent={"center"} mt={4} mb={4}>
@@ -48,7 +66,7 @@ export default function SignIn() {
                 }}
                 type="email"
                 value={email}
-                placeholder="Email or Phone"
+                placeholder="Email"
                 // required
               />
             </div>
