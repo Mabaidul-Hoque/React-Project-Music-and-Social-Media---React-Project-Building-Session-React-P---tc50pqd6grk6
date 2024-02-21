@@ -1,8 +1,8 @@
-import { Paper, Stack, Typography } from "@mui/material";
+import { Button, Paper, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import React from "react";
 
-const FavSongCard = ({ favSong }) => {
+const FavSongCard = ({ favSong, handleRemoveFav }) => {
   return (
     <Paper
       sx={{
@@ -39,6 +39,7 @@ const FavSongCard = ({ favSong }) => {
           {favSong.artist.map((artist) => artist.name).join(" & ")}
         </Typography>
       </Stack>
+      <Button onClick={() => handleRemoveFav(favSong?._id)}>unlike</Button>
     </Paper>
   );
 };

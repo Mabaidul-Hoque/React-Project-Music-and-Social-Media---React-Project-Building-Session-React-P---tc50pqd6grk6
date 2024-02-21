@@ -3,7 +3,7 @@ import { Paper, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 
 export function MusicCard({ music, onClick }) {
-  const { favSongs, setFavSongs, isFav, setIsFav } = useMusicContext().favData;
+  // const { favSongs, setFavSongs, isFav, setIsFav } = useMusicContext().favData;
 
   return (
     <Paper
@@ -27,7 +27,6 @@ export function MusicCard({ music, onClick }) {
       <div id="play-icon-container" style={styles.play_container}>
         <Image
           onClick={() => {
-            setIsFav(false);
             onClick();
           }}
           src={"https://www.svgrepo.com/show/111229/play-button.svg"}

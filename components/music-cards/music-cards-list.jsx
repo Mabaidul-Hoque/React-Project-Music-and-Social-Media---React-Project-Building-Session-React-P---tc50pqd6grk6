@@ -48,6 +48,7 @@ export function MusicCardsList() {
           />
         ))}
       </Stack>
+      {/* pagination */}
       <Stack alignItems={"center"} mt={6} mb={6}>
         <Pagination
           count={musicList.length < 10 ? 1 : 50}

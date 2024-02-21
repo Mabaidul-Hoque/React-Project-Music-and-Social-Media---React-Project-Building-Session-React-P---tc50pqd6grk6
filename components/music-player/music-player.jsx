@@ -1,6 +1,7 @@
 "use client";
 
 import { TokenContext } from "@/app/layout";
+import "../styles/musicStyle.css";
 import {
   Box,
   Button,
@@ -19,8 +20,9 @@ import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlin
 import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import { useMusicContext } from "@/context/MusicDataProvider";
 import FavAddRemove from "./FavAddRemove";
+import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 
-const PrettoSlider = styled(Slider)({
+const MusicSlider = styled(Slider)({
   color: "#0C936C",
   width: "15vw",
   height: 8,
@@ -110,7 +112,9 @@ export function MusicPlayer() {
 
   return token ? (
     <Paper style={styles.container}>
+      {/* current music thumbnail */}
       <img style={styles.thumbnail} src={currentMusic.thumbnail} />
+      {/* song title and artist name */}
       <Stack textAlign={"center"}>
         <Typography variant="h5" sx={{ fontWeight: "700", color: "#FFFFFF" }}>
           {currentMusic.title}
@@ -121,7 +125,7 @@ export function MusicPlayer() {
           {currentMusic.artist.map((artist) => artist.name).join(" & ")}
         </Typography>
       </Stack>
-
+      {/* play btn */}
       <Button
         onClick={playPause}
         sx={{
@@ -134,7 +138,7 @@ export function MusicPlayer() {
           <PlayCircleOutlineOutlinedIcon fontSize="large" />
         )}
       </Button>
-
+      {/* current time and total time section */}
       <Stack flexDirection={"row"} gap={1}>
         <Typography sx={{ fontWeight: "500", color: "#FFFFFF" }}>
           {getTimeInString(currentTime)}
@@ -144,8 +148,8 @@ export function MusicPlayer() {
           {getTimeInString(totalTime)}
         </Typography>
       </Stack>
-
-      <PrettoSlider
+      {/* song forward backword slider */}
+      <MusicSlider
         value={currentTime}
         min={0}
         max={totalTime}
@@ -156,32 +160,42 @@ export function MusicPlayer() {
           audioRef.current.currentTime = e.target.value;
         }}
       />
-
+      {/* add to the library */}
       <FavAddRemove currentMusic={currentMusic} />
-
+      {/* volume forward backword */}
       <Stack
         flexDirection={"row"}
         gap={3}
         justifyContent={"center"}
         alignContent={"center"}
       >
-        <Typography color={"#FFFFFF"}>Volume</Typography>
-        <PrettoSlider
-          value={volume}
-          min={0}
-          max={100}
-          valueLabelDisplay="auto"
-          aria-label="volume slider"
-          onChange={(e) => {
-            setVolume(e.target.value);
-            audioRef.current.volume = e.target.value / 100;
-          }}
-        />
+        <div className="volume-icon">
+          <VolumeUpIcon
+            sx={{
+              cursor: "pointer",
+            }}
+            fontSize="large"
+            htmlColor="white"
+          />
+          <MusicSlider
+            className="volume-slider"
+            value={volume}
+            min={0}
+            max={100}
+            valueLabelDisplay="auto"
+            aria-label="volume slider"
+            onChange={(e) => {
+              setVolume(e.target.value);
+              audioRef.current.volume = e.target.value / 100;
+            }}
+          />
+        </div>
       </Stack>
 
       <audio ref={audioRef} src={currentMusic.audio_url} />
     </Paper>
   ) : (
+    // if user not logged in show this
     <Stack
       style={styles.container}
       flexDirection={"row"}

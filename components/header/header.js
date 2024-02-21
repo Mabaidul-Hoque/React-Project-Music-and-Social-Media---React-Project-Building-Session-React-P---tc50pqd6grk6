@@ -54,6 +54,7 @@ export function Header() {
   // }, [musicList]);
 
   const handleHomeClick = () => {
+    setMusicPage(1);
     updateMusicList();
   };
   const handleSearch = async () => {

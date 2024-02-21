@@ -11,17 +11,16 @@ const FavAddRemove = ({ currentMusic }) => {
 
   //   console.log("isFav", isFav);
 
-  useEffect(() => {
-    handleAddFav();
-    handleRemoveFav();
-  }, [isFav]);
+  // useEffect(() => {
+  //   handleAddFav();
+  //   handleRemoveFav();
+  // }, [isFav]);
 
   const handleAddFav = () => {
     // console.log("favSongs", favSongs);
     const indxExistFav = favSongs.findIndex(
       (song) => song._id === currentMusic._id
     );
-    // console.log("indxExistFav", indxExistFav);
     if (favSongs.length === 0 || indxExistFav < 0) {
       setFavSongs((prev) => [...prev, currentMusic]);
     }
@@ -37,19 +36,19 @@ const FavAddRemove = ({ currentMusic }) => {
 
   return (
     <Box
-      onClick={() => {
-        setIsFav((prev) => !prev);
-      }}
+    // onClick={() => {
+    //   setIsFav((prev) => !prev);
+    // }}
     >
-      {isFav ? (
-        <Box sx={{ cursor: "pointer" }}>
-          <FavoriteOutlinedIcon fontSize="large" htmlColor="#E20E4E " />
-        </Box>
-      ) : (
-        <Box sx={{ cursor: "pointer" }}>
+      {/* {currentMusic._id.includes() ? ( */}
+      <div onClick={handleAddFav} sx={{ cursor: "pointer" }}>
+        <FavoriteOutlinedIcon fontSize="large" htmlColor="#E20E4E " />
+      </div>
+      {/* ) : (
+        <div onClick={handleRemoveFav} sx={{ cursor: "pointer" }}>
           <FavoriteBorderOutlinedIcon fontSize="large" htmlColor="#E20E4E " />
-        </Box>
-      )}
+        </div>
+      )} */}
     </Box>
   );
 };

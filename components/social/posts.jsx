@@ -1,9 +1,10 @@
 "use client";
 import { fetchPosts } from "@/Apis/posts";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { Post } from "./post";
 import { AuthenticationModal } from "./authentication-modal";
 import { Pagination, Stack } from "@mui/material";
+import Loading from "@/app/loading";
 
 export function Posts() {
   const [posts, setPosts] = useState([]);

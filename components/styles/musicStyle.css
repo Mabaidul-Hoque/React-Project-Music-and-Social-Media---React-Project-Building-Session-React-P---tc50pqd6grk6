@@ -9,7 +9,10 @@
 #music-card:hover #icon{
     visibility: visible;
 }
-
-#icon{
+.volume-icon:hover .volume-slider{
+    visibility: visible;
+}
+#icon,
+.volume-slider{
     visibility: hidden;
 }
