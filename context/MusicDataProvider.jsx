@@ -15,7 +15,7 @@ const MusicDataProvider = ({ children }) => {
   const [currentMusic, setCurrentMusic] = useState();
   const [musicList, setMusicList] = useState([]);
   const [musicPage, setMusicPage] = useState(1);
-  const [favSongs, setFavSongs] = useState([]);
+  const [favSongsId, setFavSongsId] = useState([]);
   const [isFav, setIsFav] = useState(false);
 
   const updateMusicList = useCallback(async () => {
@@ -35,8 +35,8 @@ const MusicDataProvider = ({ children }) => {
       setCurrentMusic,
     },
     favData: {
-      favSongs,
-      setFavSongs,
+      favSongsId,
+      setFavSongsId,
       isFav,
       setIsFav,
     },

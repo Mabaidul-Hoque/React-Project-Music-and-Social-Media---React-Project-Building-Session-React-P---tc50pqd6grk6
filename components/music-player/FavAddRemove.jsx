@@ -1,3 +1,4 @@
+"use client";
 import { Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
@@ -5,34 +6,35 @@ import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import { useMusicContext } from "@/context/MusicDataProvider";
 
 const FavAddRemove = ({ currentMusic }) => {
-  //   const [isFav, setIsFav] = useState(false);
+  const { isFav, setIsFav } = useMusicContext().favData;
 
-  const { favSongs, setFavSongs, isFav, setIsFav } = useMusicContext().favData;
-
-  //   console.log("isFav", isFav);
-
-  // useEffect(() => {
-  //   handleAddFav();
-  //   handleRemoveFav();
-  // }, [isFav]);
+  useEffect(() => {
+    // Check if current music is already in localStorage
+    const favMusic = JSON.parse(localStorage.getItem("favoriteMusic"));
+    if (favMusic && favMusic.includes(currentMusic?._id)) {
+      setIsFav(true);
+    }
+  }, [currentMusic]);
 
   const handleAddFav = () => {
-    // console.log("favSongs", favSongs);
-    const indxExistFav = favSongs.findIndex(
-      (song) => song._id === currentMusic._id
-    );
-    if (favSongs.length === 0 || indxExistFav < 0) {
-      setFavSongs((prev) => [...prev, currentMusic]);
+    // Add current music to localStorage
+    const favMusic = JSON.parse(localStorage.getItem("favoriteMusic")) || [];
+    if (!favMusic.includes(currentMusic?._id)) {
+      localStorage.setItem(
+        "favoriteMusic",
+        JSON.stringify([...favMusic, currentMusic?._id])
+      );
+      setIsFav(true);
     }
-    const jsonFavSongs = JSON.stringify(favSongs);
-    localStorage.setItem("favSongs", jsonFavSongs);
-    console.log(
-      "local storage songs",
-      JSON.parse(localStorage.getItem("favSongs"))
-    );
   };
 
-  const handleRemoveFav = () => {};
+  const handleRemoveFav = () => {
+    // Remove current music from localStorage
+    const favMusic = JSON.parse(localStorage.getItem("favoriteMusic")) || [];
+    const updatedFavMusic = favMusic.filter((id) => id !== currentMusic?._id);
+    localStorage.setItem("favoriteMusic", JSON.stringify(updatedFavMusic));
+    setIsFav(false);
+  };
 
   return (
     <Box
@@ -40,15 +42,17 @@ const FavAddRemove = ({ currentMusic }) => {
     //   setIsFav((prev) => !prev);
     // }}
     >
-      {/* {currentMusic._id.includes() ? ( */}
-      <div onClick={handleAddFav} sx={{ cursor: "pointer" }}>
-        <FavoriteOutlinedIcon fontSize="large" htmlColor="#E20E4E " />
-      </div>
-      {/* ) : (
+      {isFav ? (
         <div onClick={handleRemoveFav} sx={{ cursor: "pointer" }}>
+          {/* already added in the library */}
+          <FavoriteOutlinedIcon fontSize="large" htmlColor="#E20E4E" />
+        </div>
+      ) : (
+        <div onClick={handleAddFav} sx={{ cursor: "pointer" }}>
+          {/* not added to the library */}
           <FavoriteBorderOutlinedIcon fontSize="large" htmlColor="#E20E4E " />
         </div>
-      )} */}
+      )}
     </Box>
   );
 };

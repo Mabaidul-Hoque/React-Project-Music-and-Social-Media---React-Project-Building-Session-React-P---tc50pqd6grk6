@@ -1,3 +1,4 @@
+
 import { fetchComments, likePost } from "@/Apis/posts";
 import { TokenContext } from "@/app/layout";
 import { useContext, useState } from "react";
@@ -12,19 +13,31 @@ export function Post({ post, setShowModal }) {
   const [isComment, setIsComment] = useState(false);
 
   const onLike = async () => {
+    const likedPost = getLikedPostFromLS();
     if (!token) {
       setShowModal(true);
     } else {
       try {
+        localStorage.setItem("likedPost", JSON.stringify([...likedPost, post?._id]));
         await likePost(post?._id);
         setLikes((likes) => likes + 1);
       } catch (err) {
+        localStorage.setItem("likedPost", JSON.stringify(likedPost?.filter((likedItem) => likedItem !== post?._id)));
         toast.info(err?.response?.data?.message, {
           theme: "colored"
         });
       }
     }
+    console.log("likedPost--->", getLikedPostFromLS());
   };
+  
+  const getLikedPostFromLS = () => {
+    const likedPost = JSON.parse(localStorage.getItem("likedPost"));
+    const validatedLikedPost = likedPost === null ? [] : likedPost;
+    return validatedLikedPost;
+  }
+  
+
   const onComment = async () => {
     setIsComment((prev) => !prev);
     if (!token) {
@@ -110,14 +123,14 @@ export function Post({ post, setShowModal }) {
           </div>
           <Stack flexDirection={"row"} gap={2}>
             <Typography
-              style={{
+              sx={{
                 cursor: "pointer",
+                color: getLikedPostFromLS().includes(post?._id) ? "blue" : "white",
               }}
               onClick={onLike}
             >
-              {" "}
-              Likes:{likes}{" "}
-            </Typography>{" "}
+              Likes:{likes}
+            </Typography>
             <Typography
               style={{
                 cursor: "pointer",

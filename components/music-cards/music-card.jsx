@@ -3,30 +3,15 @@ import { Paper, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 
 export function MusicCard({ music, onClick }) {
-  // const { favSongs, setFavSongs, isFav, setIsFav } = useMusicContext().favData;
+  const { setIsFav } = useMusicContext().favData;
 
   return (
-    <Paper
-      sx={{
-        width: "17vw",
-        height: "40vh",
-        borderRadius: "15px",
-        bgcolor: "#393939",
-        color: "#FFFFFF",
-        cursor: "pointer",
-        position: "relative",
-        transition: "0.5s ease-in-out",
-        "&:hover": {
-          scale: "1.15",
-        },
-      }}
-      id="music-card"
-    >
+    <Paper sx={paperStyle} id="music-card">
       <img id="music-thumbnail" style={styles.image} src={music.thumbnail} />
-
       <div id="play-icon-container" style={styles.play_container}>
         <Image
           onClick={() => {
+            setIsFav(false);
             onClick();
           }}
           src={"https://www.svgrepo.com/show/111229/play-button.svg"}
@@ -46,6 +31,20 @@ export function MusicCard({ music, onClick }) {
     </Paper>
   );
 }
+
+const paperStyle = {
+  width: "17vw",
+  height: "40vh",
+  borderRadius: "15px",
+  bgcolor: "#393939",
+  color: "#FFFFFF",
+  cursor: "pointer",
+  position: "relative",
+  transition: "0.5s ease-in-out",
+  "&:hover": {
+    scale: "1.15",
+  },
+};
 
 const styles = {
   image: {

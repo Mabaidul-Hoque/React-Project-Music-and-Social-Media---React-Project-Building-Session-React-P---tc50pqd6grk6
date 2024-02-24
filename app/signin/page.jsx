@@ -16,32 +16,32 @@ export default function SignIn() {
   const { token, setToken } = useContext(TokenContext);
 
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const passRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#])[A-Za-z\d@#]{8,}$/;
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (email !== "" && password !== "") {
-      if(regex.test(email)){
+    if (email !== "" && passRegex.test(password)) {
+      if (regex.test(email)) {
         const data = await signin({ email, password });
         if (data && data?.status === "success") {
           toast.success("You have Signed in successfully", {
-            theme: "colored"
+            theme: "colored",
           });
           localStorage.setItem("token", data.token);
           setToken(data.token);
           router.push("/");
-        }else {
+        } else {
           toast.error("Incorrect EmailId or Password", {
-            theme: "colored"
+            theme: "colored",
           });
         }
-      }else {
+      } else {
         toast.error("Invalid email !", {
-          theme: "colored"
+          theme: "colored",
         });
       }
-      
     } else {
       toast.error("Fill all the input details !", {
-        theme: "colored"
+        theme: "colored",
       });
     }
   };

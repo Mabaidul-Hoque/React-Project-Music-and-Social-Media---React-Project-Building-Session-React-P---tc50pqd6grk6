@@ -22,23 +22,24 @@ export default function SignUp() {
   const { token, setToken } = useContext(TokenContext);
 
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const passRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#])[A-Za-z\d@#]{8,}$/;
   const onSubmit = async (e) => {
     e.preventDefault();
     if (name !== "" && email !== "" && password !== "") {
-      if(regex.test(email)){
-        const data = await signup({ name, email, password});
+      if (regex.test(email) && passRegex.test(password)) {
+        const data = await signup({ name, email, password });
         if (data?.status === "success") {
           toast.success("You have registered successfully", {
             theme: "colored",
           });
-  
+
           //  use incase of useeffect
           // if (typeof window !== 'undefined') {
           //   // Code that uses localStorage
           //   localStorage.setItem('exampleKey', 'exampleValue');
           //   }
           //   }, []);
-  
+
           if (typeof localStorage !== "undefined") {
             // Your code that uses localStorage
             localStorage.setItem("token", data.token);
@@ -46,18 +47,25 @@ export default function SignUp() {
             // Handle the case where localStorage is not available
             throw new Error("something is wrong with the local storage");
           }
-  
+
           setToken(data.token);
           router.push("/");
-        }else {
+        } else {
           toast.warn("Already you have an account", {
-            theme: "colored"
-          })
+            theme: "colored",
+          });
         }
-      }else {
+      } else if (!regex.test(email)) {
         toast.error("Invalid email !", {
-          theme: "colored"
+          theme: "colored",
         });
+      } else {
+        toast.error(
+          "Invalid password, password should contain at least 8 characters which are combination of alphabets, numbers and special character !",
+          {
+            theme: "colored",
+          }
+        );
       }
     } else {
       toast.error("Fill all the input details !", {
@@ -118,7 +126,6 @@ export default function SignUp() {
           </form>
         </div>
       </Stack>
-      
     </>
   );
 }
