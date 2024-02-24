@@ -2,12 +2,12 @@
 
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
-import { TokenContext } from "../layout";
 import { signin } from "@/Apis/user";
 import Link from "next/link";
 import "../../components/styles/loginSignup.css";
 import { Stack } from "@mui/material";
 import { toast } from "react-toastify";
+import { TokenContext } from "@/context/AuthProvider";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
@@ -48,12 +48,6 @@ export default function SignIn() {
     }
   };
 
-  // useEffect(() => {
-  //   if (token) {
-  //     router.push("/");
-  //   }
-  // }, [token]);
-
   return (
     <>
       <Stack flexDirection={"row"} justifyContent={"center"} mt={4} mb={4}>
@@ -69,7 +63,7 @@ export default function SignIn() {
                 type="email"
                 value={email}
                 placeholder="Email"
-                // required
+                required
               />
             </div>
             <div className="field">
@@ -81,10 +75,12 @@ export default function SignIn() {
                 type="password"
                 value={password}
                 placeholder="Password"
-                // required
+                required
               />
             </div>
-            <button onClick={onSubmit}>LOGIN</button>
+            <button className="login_btn" onClick={onSubmit}>
+              LOGIN
+            </button>
             <div className="link">
               New User? <Link href={"/signup"}>Sign Up</Link>
             </div>

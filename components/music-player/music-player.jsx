@@ -1,6 +1,4 @@
 "use client";
-
-import { TokenContext } from "@/app/layout";
 import "../styles/musicStyle.css";
 import {
   Box,
@@ -21,6 +19,7 @@ import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import { useMusicContext } from "@/context/MusicDataProvider";
 import FavAddRemove from "./FavAddRemove";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
+import { TokenContext } from "@/context/AuthProvider";
 
 const MusicSlider = styled(Slider)({
   color: "#0C936C",

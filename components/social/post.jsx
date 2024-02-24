@@ -1,9 +1,10 @@
+"use client";
 import { fetchComments, likePost } from "@/Apis/posts";
-import { TokenContext } from "@/app/layout";
 import { useContext, useState } from "react";
 import { Comment } from "./comment";
 import { Box, Paper, Stack, Typography } from "@mui/material";
 import { toast } from "react-toastify";
+import { TokenContext } from "@/context/AuthProvider";
 
 export function Post({ post, setShowModal }) {
   const { token } = useContext(TokenContext);

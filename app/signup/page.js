@@ -4,10 +4,10 @@ import "../../components/styles/loginSignup.css";
 import { signup } from "@/Apis/user";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
-import { TokenContext } from "../layout";
 import Link from "next/link";
 import { Stack } from "@mui/material";
 import { toast } from "react-toastify";
+import { TokenContext } from "@/context/AuthProvider";
 
 export default function SignUp() {
   // const [userInfo, setUserInfo] = useState({
@@ -112,7 +112,9 @@ export default function SignUp() {
                 placeholder="Password"
               />
             </div>
-            <button onClick={onSubmit}>SIGNUP</button>
+            <button className="signup_btn" onClick={onSubmit}>
+              SIGNUP
+            </button>
             <div className="link">
               Already Registered? <Link href={"/signin"}>Sign In</Link>
             </div>

@@ -1,3 +1,4 @@
+"use client";
 import { fetchMusicList } from "@/Apis/music";
 import React, { createContext, useCallback, useContext, useState } from "react";
 

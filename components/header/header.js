@@ -1,6 +1,5 @@
 "use client";
 import Link from "next/link";
-import { TokenContext } from "@/app/layout";
 import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import "./header.css";
@@ -20,6 +19,7 @@ import { useMusicContext } from "@/context/MusicDataProvider";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { fetchSearchedSong } from "@/Apis/SearchApi";
 import { toast } from "react-toastify";
+import { TokenContext } from "@/context/AuthProvider";
 
 const CustomButton = styled(Button)({
   width: "42px",
@@ -50,17 +50,12 @@ export function Header() {
   const { updateMusicList, musicPage, setMusicPage, musicList, setMusicList } =
     useMusicContext().musicVal;
 
-  // useEffect(() => {
-  //   handleSearch();
-  // }, [musicList]);
-
   const handleHomeClick = () => {
     setMusicPage(1);
     updateMusicList();
   };
   const handleSearch = async () => {
     const filteredData = await fetchSearchedSong(searchInput);
-    // console.log("searched data", filteredData.data.data);
     setMusicList(filteredData.data.data);
   };
 
@@ -135,10 +130,8 @@ export function Header() {
           <SearchOutlinedIcon htmlColor="gray" />
         </CustomButton>
       </Stack>
-      <Stack flexDirection={"row"} gap={2} alignItems={"center"}>
-        <CustomButton className="login-btn">
-          <PersonOutlineOutlinedIcon fontSize="medium" htmlColor="gray" />
-        </CustomButton>
+      <Stack flexDirection={"row"} gap={1} alignItems={"center"}>
+        <PersonOutlineOutlinedIcon fontSize="medium" htmlColor="white" />
         <Typography
           variant="h6"
           color={"#FFFFFF"}
