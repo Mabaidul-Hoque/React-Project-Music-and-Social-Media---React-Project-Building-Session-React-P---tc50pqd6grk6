@@ -10,7 +10,9 @@ const FavAddRemove = ({ currentMusic }) => {
 
   useEffect(() => {
     // Check if current music is already in localStorage
-    const favMusic = JSON.parse(localStorage.getItem("favoriteMusic"));
+    const favMusic = JSON.parse(
+      typeof window !== "undefined" && localStorage.getItem("favoriteMusic")
+    );
     if (favMusic && favMusic.includes(currentMusic?._id)) {
       setIsFav(true);
     }
@@ -18,21 +20,29 @@ const FavAddRemove = ({ currentMusic }) => {
 
   const handleAddFav = () => {
     // Add current music to localStorage
-    const favMusic = JSON.parse(localStorage.getItem("favoriteMusic")) || [];
+    const favMusic =
+      JSON.parse(
+        typeof window !== "undefined" && localStorage.getItem("favoriteMusic")
+      ) || [];
     if (!favMusic.includes(currentMusic?._id)) {
-      localStorage.setItem(
-        "favoriteMusic",
-        JSON.stringify([...favMusic, currentMusic?._id])
-      );
+      typeof window !== "undefined" &&
+        localStorage.setItem(
+          "favoriteMusic",
+          JSON.stringify([...favMusic, currentMusic?._id])
+        );
       setIsFav(true);
     }
   };
 
   const handleRemoveFav = () => {
     // Remove current music from localStorage
-    const favMusic = JSON.parse(localStorage.getItem("favoriteMusic")) || [];
+    const favMusic =
+      JSON.parse(
+        typeof window !== "undefined" && localStorage.getItem("favoriteMusic")
+      ) || [];
     const updatedFavMusic = favMusic.filter((id) => id !== currentMusic?._id);
-    localStorage.setItem("favoriteMusic", JSON.stringify(updatedFavMusic));
+    typeof window !== "undefined" &&
+      localStorage.setItem("favoriteMusic", JSON.stringify(updatedFavMusic));
     setIsFav(false);
   };
 

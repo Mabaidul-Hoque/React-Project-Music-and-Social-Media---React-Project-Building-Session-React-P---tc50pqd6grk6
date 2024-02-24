@@ -33,15 +33,8 @@ export default function SignUp() {
             theme: "colored",
           });
 
-          //  use incase of useeffect
-          // if (typeof window !== 'undefined') {
-          //   // Code that uses localStorage
-          //   localStorage.setItem('exampleKey', 'exampleValue');
-          //   }
-          //   }, []);
-
           if (typeof localStorage !== "undefined") {
-            // Your code that uses localStorage
+            //  code that uses localStorage
             localStorage.setItem("token", data.token);
           } else {
             // Handle the case where localStorage is not available

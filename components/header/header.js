@@ -66,11 +66,13 @@ export function Header() {
 
   const onLoginLogout = () => {
     if (token) {
-      localStorage.removeItem("token");
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("token");
+      }
       setToken();
       toast.success("You have logged out", {
-        theme: "colored"
-      })
+        theme: "colored",
+      });
     }
     router.push("/signin");
   };

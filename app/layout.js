@@ -13,7 +13,9 @@ import Footer from "@/components/footer/Footer";
 export const TokenContext = createContext();
 
 export default function RootLayout({ children }) {
-  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [token, setToken] = useState(
+    typeof window !== "undefined" && localStorage.getItem("token")
+  );
   return (
     <html>
       <body>

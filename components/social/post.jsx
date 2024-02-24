@@ -1,4 +1,3 @@
-
 import { fetchComments, likePost } from "@/Apis/posts";
 import { TokenContext } from "@/app/layout";
 import { useContext, useState } from "react";
@@ -18,25 +17,36 @@ export function Post({ post, setShowModal }) {
       setShowModal(true);
     } else {
       try {
-        localStorage.setItem("likedPost", JSON.stringify([...likedPost, post?._id]));
+        typeof window !== "undefined" &&
+          localStorage.setItem(
+            "likedPost",
+            JSON.stringify([...likedPost, post?._id])
+          );
         await likePost(post?._id);
         setLikes((likes) => likes + 1);
       } catch (err) {
-        localStorage.setItem("likedPost", JSON.stringify(likedPost?.filter((likedItem) => likedItem !== post?._id)));
+        typeof window !== "undefined" &&
+          localStorage.setItem(
+            "likedPost",
+            JSON.stringify(
+              likedPost?.filter((likedItem) => likedItem !== post?._id)
+            )
+          );
         toast.info(err?.response?.data?.message, {
-          theme: "colored"
+          theme: "colored",
         });
       }
     }
     console.log("likedPost--->", getLikedPostFromLS());
   };
-  
+
   const getLikedPostFromLS = () => {
-    const likedPost = JSON.parse(localStorage.getItem("likedPost"));
+    const likedPost = JSON.parse(
+      typeof window !== "undefined" && localStorage.getItem("likedPost")
+    );
     const validatedLikedPost = likedPost === null ? [] : likedPost;
     return validatedLikedPost;
-  }
-  
+  };
 
   const onComment = async () => {
     setIsComment((prev) => !prev);
@@ -125,7 +135,9 @@ export function Post({ post, setShowModal }) {
             <Typography
               sx={{
                 cursor: "pointer",
-                color: getLikedPostFromLS().includes(post?._id) ? "blue" : "white",
+                color: getLikedPostFromLS().includes(post?._id)
+                  ? "blue"
+                  : "white",
               }}
               onClick={onLike}
             >

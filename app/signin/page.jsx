@@ -26,7 +26,9 @@ export default function SignIn() {
           toast.success("You have Signed in successfully", {
             theme: "colored",
           });
-          localStorage.setItem("token", data.token);
+          if (typeof window !== "undefined") {
+            localStorage.setItem("token", data.token);
+          }
           setToken(data.token);
           router.push("/");
         } else {

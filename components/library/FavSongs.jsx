@@ -11,7 +11,9 @@ const FavSongs = () => {
   const [paginatedSongsId, setPaginatedSongsId] = useState([]);
 
   useEffect(() => {
-    const favoriteMusicIds = JSON.parse(localStorage.getItem("favoriteMusic"));
+    const favoriteMusicIds = JSON.parse(
+      typeof window !== "undefined" && localStorage.getItem("favoriteMusic")
+    );
     const lastIndx = favPage * 10;
     const firstIndx = lastIndx - 10;
     setPaginatedSongsId(() => favoriteMusicIds?.slice(firstIndx, lastIndx));
@@ -21,12 +23,15 @@ const FavSongs = () => {
     setFavPage(value);
   };
   const handleRemoveFav = (id) => {
-    const favoriteMusicIds = JSON.parse(localStorage.getItem("favoriteMusic"));
+    const favoriteMusicIds = JSON.parse(
+      typeof window !== "undefined" && localStorage.getItem("favoriteMusic")
+    );
     const indexToDelete = favoriteMusicIds?.findIndex(
       (musicId) => musicId === id
     );
     favoriteMusicIds?.splice(indexToDelete, 1);
-    localStorage.setItem("favoriteMusic", JSON.stringify(favoriteMusicIds));
+    typeof window !== "undefined" &&
+      localStorage.setItem("favoriteMusic", JSON.stringify(favoriteMusicIds));
     setIsFav((prev) => !prev);
   };
 
@@ -60,7 +65,10 @@ const FavSongs = () => {
       <Stack alignItems={"center"} mt={6} mb={6}>
         <Pagination
           count={Math.ceil(
-            JSON.parse(localStorage.getItem("favoriteMusic"))?.length / 10
+            JSON.parse(
+              typeof window !== "undefined" &&
+                localStorage.getItem("favoriteMusic")
+            )?.length / 10
           )}
           color={"primary"}
           bgcolor={"white"}
