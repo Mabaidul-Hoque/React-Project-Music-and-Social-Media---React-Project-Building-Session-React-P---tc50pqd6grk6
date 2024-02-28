@@ -47,7 +47,7 @@ export function Header() {
 
   const router = useRouter();
 
-  const { updateMusicList, musicPage, setMusicPage, musicList, setMusicList } =
+  const { updateMusicList, setMusicPage, setMusicList } =
     useMusicContext().musicVal;
 
   const handleHomeClick = () => {
@@ -72,6 +72,11 @@ export function Header() {
     router.push("/signin");
   };
 
+  const handleLibraryClick = () => {
+    if (token) router.push("/library");
+    else toast.error("You have to login!", { theme: "colored" });
+  };
+
   return (
     <Stack
       flexDirection={"row"}
@@ -85,7 +90,7 @@ export function Header() {
         height={"40px"}
         src="https://e7.pngegg.com/pngimages/711/190/png-clipart-soundcloud-computer-icons-social-media-logo-music-sound-of-colors-company-internet.png"
       />
-
+      {/* HOME ROUTE */}
       <Link onClick={handleHomeClick} href={"/"}>
         <Stack flexDirection={"row"} alignItems={"center"} gap={0.5}>
           <Box mb={-0.6}>
@@ -96,6 +101,7 @@ export function Header() {
           </Typography>
         </Stack>
       </Link>
+      {/* SOCIAL ROUTE */}
       <Link href={"/social"}>
         <Stack flexDirection={"row"} alignItems={"center"} gap={0.5}>
           <Box mb={-0.6}>
@@ -106,18 +112,24 @@ export function Header() {
           </Typography>
         </Stack>
       </Link>
-      <Link href={"/library"}>
-        {" "}
-        <Stack flexDirection={"row"} alignItems={"center"} gap={0.5}>
-          <Box mb={-0.6}>
-            <HeadphonesIcon htmlColor="#FFFFFF" fontSize="medium" />
-          </Box>
-          <Typography variant="h5" color={"#FFFFFF"}>
-            Library
-          </Typography>
-        </Stack>
-      </Link>
-
+      {/* LIBRARY ROUTE */}
+      <Stack
+        onClick={handleLibraryClick}
+        sx={{
+          flexDirection: "row",
+          alignItems: "center",
+          gap: 0.5,
+          cursor: "pointer",
+        }}
+      >
+        <Box mb={-0.6}>
+          <HeadphonesIcon htmlColor="#FFFFFF" fontSize="medium" />
+        </Box>
+        <Typography variant="h5" color={"#FFFFFF"}>
+          Library
+        </Typography>
+      </Stack>
+      {/* MUSIC SEARCH CONTAINER  */}
       <Stack flexDirection={"row"} alignItems={"center"}>
         <CustomInput
           id="outlined-basic"
@@ -130,6 +142,7 @@ export function Header() {
           <SearchOutlinedIcon htmlColor="gray" />
         </CustomButton>
       </Stack>
+      {/* LOGIN/LOGOUT CONTAINER */}
       <Stack flexDirection={"row"} gap={1} alignItems={"center"}>
         <PersonOutlineOutlinedIcon fontSize="medium" htmlColor="white" />
         <Typography

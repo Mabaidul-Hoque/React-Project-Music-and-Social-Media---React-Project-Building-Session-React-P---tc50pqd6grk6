@@ -30,8 +30,10 @@ const FavSongs = () => {
       (musicId) => musicId === id
     );
     favoriteMusicIds?.splice(indexToDelete, 1);
-    typeof window !== "undefined" &&
+    if (typeof window !== "undefined") {
       localStorage.setItem("favoriteMusic", JSON.stringify(favoriteMusicIds));
+    }
+      
     setIsFav((prev) => !prev);
   };
 

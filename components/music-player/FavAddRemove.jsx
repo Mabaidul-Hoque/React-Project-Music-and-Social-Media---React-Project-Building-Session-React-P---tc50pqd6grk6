@@ -25,11 +25,13 @@ const FavAddRemove = ({ currentMusic }) => {
         typeof window !== "undefined" && localStorage.getItem("favoriteMusic")
       ) || [];
     if (!favMusic.includes(currentMusic?._id)) {
-      typeof window !== "undefined" &&
+      if (typeof window !== "undefined") {
         localStorage.setItem(
           "favoriteMusic",
           JSON.stringify([...favMusic, currentMusic?._id])
         );
+      }
+
       setIsFav(true);
     }
   };
@@ -41,8 +43,9 @@ const FavAddRemove = ({ currentMusic }) => {
         typeof window !== "undefined" && localStorage.getItem("favoriteMusic")
       ) || [];
     const updatedFavMusic = favMusic.filter((id) => id !== currentMusic?._id);
-    typeof window !== "undefined" &&
+    if (typeof window !== "undefined") {
       localStorage.setItem("favoriteMusic", JSON.stringify(updatedFavMusic));
+    }
     setIsFav(false);
   };
 

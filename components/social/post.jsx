@@ -18,21 +18,24 @@ export function Post({ post, setShowModal }) {
       setShowModal(true);
     } else {
       try {
-        typeof window !== "undefined" &&
+        if (typeof window !== "undefined") {
           localStorage.setItem(
             "likedPost",
             JSON.stringify([...likedPost, post?._id])
           );
+        }
+
         await likePost(post?._id);
         setLikes((likes) => likes + 1);
       } catch (err) {
-        typeof window !== "undefined" &&
+        if (typeof window !== "undefined") {
           localStorage.setItem(
             "likedPost",
             JSON.stringify(
               likedPost?.filter((likedItem) => likedItem !== post?._id)
             )
           );
+        }
         toast.info(err?.response?.data?.message, {
           theme: "colored",
         });

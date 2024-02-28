@@ -1,3 +1,5 @@
+"use client";
+
 import axios from "./axios-instance";
 
 export async function fetchPosts(limit, page) {
