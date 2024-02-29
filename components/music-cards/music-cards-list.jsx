@@ -38,11 +38,13 @@ export function MusicCardsList() {
       </Typography>
       <Stack pt={4}>
         <Stack
-          flexWrap={"wrap"}
-          flexDirection={"row"}
-          justifyContent={"center"}
-          alignItems={"flex-start"}
-          gap={3.5}
+          sx={{
+            flexDirection: "row",
+            alignItems: "flex-start",
+            justifyContent: "center",
+            gap: 3.5,
+            flexWrap: "wrap",
+          }}
         >
           {musicList.map((music) => (
             <MusicCard

@@ -50,18 +50,14 @@ const FavAddRemove = ({ currentMusic }) => {
   };
 
   return (
-    <Box
-    // onClick={() => {
-    //   setIsFav((prev) => !prev);
-    // }}
-    >
+    <Box sx={{ cursor: "pointer" }}>
       {isFav ? (
-        <div onClick={handleRemoveFav} sx={{ cursor: "pointer" }}>
+        <div onClick={handleRemoveFav}>
           {/* already added in the library */}
           <FavoriteOutlinedIcon fontSize="large" htmlColor="#E20E4E" />
         </div>
       ) : (
-        <div onClick={handleAddFav} sx={{ cursor: "pointer" }}>
+        <div onClick={handleAddFav}>
           {/* not added to the library */}
           <FavoriteBorderOutlinedIcon fontSize="large" htmlColor="#E20E4E " />
         </div>

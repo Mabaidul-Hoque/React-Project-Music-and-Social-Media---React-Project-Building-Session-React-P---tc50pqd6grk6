@@ -6,6 +6,21 @@ import { Box, Paper, Stack, Typography } from "@mui/material";
 import { toast } from "react-toastify";
 import { TokenContext } from "@/context/AuthProvider";
 
+const cardStyle = {
+  alignItems: "center",
+  height: "100%",
+  bgcolor: "#393939",
+  color: "#FFFFFF",
+  borderRadius: "10px",
+};
+
+const channelStyle = {
+  display: "flex",
+  padding: 10,
+  justifyContent: "space-between",
+  width: "100%",
+  alignItems: "center",
+};
 export function Post({ post, setShowModal }) {
   const { token } = useContext(TokenContext);
   const [likes, setLikes] = useState(post.likeCount);
@@ -18,30 +33,23 @@ export function Post({ post, setShowModal }) {
       setShowModal(true);
     } else {
       try {
-        if (typeof window !== "undefined") {
-          localStorage.setItem(
-            "likedPost",
-            JSON.stringify([...likedPost, post?._id])
-          );
-        }
-
         await likePost(post?._id);
         setLikes((likes) => likes + 1);
-      } catch (err) {
+
         if (typeof window !== "undefined") {
-          localStorage.setItem(
-            "likedPost",
-            JSON.stringify(
-              likedPost?.filter((likedItem) => likedItem !== post?._id)
-            )
-          );
+          if (!likedPost.includes(post?._id)) {
+            localStorage.setItem(
+              "likedPost",
+              JSON.stringify([...likedPost, post?._id])
+            );
+          }
         }
+      } catch (err) {
         toast.info(err?.response?.data?.message, {
           theme: "colored",
         });
       }
     }
-    console.log("likedPost--->", getLikedPostFromLS());
   };
 
   const getLikedPostFromLS = () => {
@@ -61,28 +69,25 @@ export function Post({ post, setShowModal }) {
     }
   };
   return (
-    <Paper
+    <Box
       sx={{
-        width: "50vw",
+        width: { xs: "90vw", sm: "35rem", md: "40rem" },
         maxheight: "50vh",
         boxShadow: "none",
+        border: "1px solid black",
+        borderRadius: "10px",
+        "&:hover": {
+          borderColor: "#FFFFFF",
+        },
       }}
     >
-      <Stack
-        alignItems={"center"}
-        p={2}
-        sx={{
-          height: "100%",
-          bgcolor: "#393939",
-          color: "#FFFFFF",
-          border: "1px solid black",
-          borderRadius: "10px",
-          "&:hover": {
-            borderColor: "#FFFFFF",
-          },
-        }}
-      >
-        <Stack mb={3} flexDirection={"row"} gap={2} alignItems={"center"}>
+      {/* POST CARD */}
+      <Stack sx={{ ...cardStyle, p: { xs: 1, sm: 2 } }}>
+        {/* CARD IMG AND TITLE CONTAINER */}
+        <Stack
+          sx={{ mb: 3, flexDirection: "row", alignItems: "center", gap: 2 }}
+        >
+          {/* CARD IMG */}
           <img
             style={{
               width: 50,
@@ -91,6 +96,7 @@ export function Post({ post, setShowModal }) {
             }}
             src={post.author.profileImage}
           />
+          {/* CARD TITLE */}
           <div
             style={{
               display: "flex",
@@ -104,25 +110,17 @@ export function Post({ post, setShowModal }) {
             <Typography textAlign={"center"}>By: {post.author.name}</Typography>
           </div>
         </Stack>
-
-        <Typography textAlign={"center"} variant="h6">
+        {/* CARD CONTENT */}
+        <Typography sx={{ mb: 2, textAlign: "center" }}>
           {post.content}
         </Typography>
-
-        <div
-          style={{
-            display: "flex",
-            padding: 10,
-            justifyContent: "space-between",
-            width: "100%",
-            alignItems: "center",
-          }}
-        >
+        {/* CARD CHANNEL CONTAINER */}
+        <div style={{ ...channelStyle }}>
           <div
             style={{
               display: "flex",
-              gap: 10,
               alignItems: "center",
+              gap: 10,
             }}
           >
             <img
@@ -135,25 +133,28 @@ export function Post({ post, setShowModal }) {
             />
             <h4>Channel: {post.channel.name}</h4>
           </div>
-          <Stack flexDirection={"row"} gap={2}>
+          {/* LIKE AND COMMENT CONTAINER */}
+          <Stack sx={{ flexDirection: "row", gap: 2, flexWrap: "wrap" }}>
+            {/* LIKE */}
             <Typography
               sx={{
                 cursor: "pointer",
                 color: getLikedPostFromLS().includes(post?._id)
-                  ? "blue"
+                  ? "green"
                   : "white",
               }}
               onClick={onLike}
             >
-              Likes:{likes}
+              Likes: {likes}
             </Typography>
+            {/* COMMENT */}
             <Typography
               style={{
                 cursor: "pointer",
               }}
               onClick={onComment}
             >
-              Comments:{post.commentCount}
+              Comments: {post.commentCount}
             </Typography>
           </Stack>
         </div>
@@ -176,6 +177,6 @@ export function Post({ post, setShowModal }) {
           ""
         )}
       </Stack>
-    </Paper>
+    </Box>
   );
 }

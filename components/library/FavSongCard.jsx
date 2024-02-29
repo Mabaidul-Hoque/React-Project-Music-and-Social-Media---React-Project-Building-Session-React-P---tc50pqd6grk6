@@ -3,9 +3,12 @@ import { Button, Paper, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
+import { useMusicContext } from "@/context/MusicDataProvider";
 
 const FavSongCard = ({ favSongId, handleRemoveFav }) => {
   const [favSong, setFavSong] = useState(null);
+  const { setCurrFav } = useMusicContext().favSongsData;
+
   useEffect(() => {
     favSongFromLs();
   }, [favSongId]);
@@ -19,7 +22,7 @@ const FavSongCard = ({ favSongId, handleRemoveFav }) => {
       <img id="music-thumbnail" style={styles.image} src={favSong?.thumbnail} />
       <div id="play-icon-container" style={styles.play_container}>
         <Image
-          //   onClick={onClick}
+          onClick={() => setCurrFav(favSong)}
           src={"https://www.svgrepo.com/show/111229/play-button.svg"}
           alt="play"
           height={50}
@@ -44,7 +47,7 @@ const FavSongCard = ({ favSongId, handleRemoveFav }) => {
 };
 
 const paperStyle = {
-  width: "17vw",
+  width: "230px",
   height: "41vh",
   borderRadius: "15px",
   bgcolor: "#393939",

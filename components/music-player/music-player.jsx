@@ -9,29 +9,28 @@ import {
   Typography,
   styled,
 } from "@mui/material";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useCallback, useContext, useEffect, useRef, useState } from "react";
-import PlayCircleOutlineOutlinedIcon from "@mui/icons-material/PlayCircleOutlineOutlined";
-import PauseCircleOutlineIcon from "@mui/icons-material/PauseCircleOutline";
-import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
-import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useMusicContext } from "@/context/MusicDataProvider";
 import FavAddRemove from "./FavAddRemove";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import { TokenContext } from "@/context/AuthProvider";
+import {
+  PauseOutlined,
+  StepBackwardOutlined,
+  StepForwardOutlined,
+} from "@ant-design/icons";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 
 const MusicSlider = styled(Slider)({
   color: "#0C936C",
-  width: "15vw",
-  height: 8,
-
+  height: 3,
   "& .MuiSlider-track": {
     border: "none",
   },
   "& .MuiSlider-thumb": {
-    height: 24,
-    width: 24,
+    height: 20,
+    width: 20,
     backgroundColor: "#fff",
     border: "2px solid currentColor",
     "&:focus, &:hover, &.Mui-active, &.Mui-focusVisible": {
@@ -41,6 +40,13 @@ const MusicSlider = styled(Slider)({
       display: "none",
     },
   },
+});
+
+const PlayPasueBtn = styled(Button)({
+  width: "fit-content",
+  "&:hover": { bgcolor: "#212020", color: "#212020" },
+  "&:focus": { bgcolor: "#212020", color: "#212020" },
+  "&:active": { bgcolor: "#212020", color: "#212020" },
 });
 
 export function MusicPlayer() {
@@ -110,34 +116,27 @@ export function MusicPlayer() {
   if (!currentMusic) return null;
 
   return token ? (
-    <Paper style={styles.container}>
-      {/* current music thumbnail */}
-      <img style={styles.thumbnail} src={currentMusic.thumbnail} />
-      {/* song title and artist name */}
-      <Stack textAlign={"center"}>
-        <Typography variant="h5" sx={{ fontWeight: "700", color: "#FFFFFF" }}>
-          {currentMusic.title}
-        </Typography>
-        <Typography
-          sx={{ fontSize: "14px", fontWeight: "600", color: "#FFFFFF" }}
-        >
-          {currentMusic.artist.map((artist) => artist.name).join(" & ")}
-        </Typography>
-      </Stack>
-      {/* play btn */}
-      <Button
-        onClick={playPause}
-        sx={{
-          width: "4rem",
-        }}
-      >
-        {isPlaying ? (
-          <PauseCircleOutlineIcon fontSize="large" />
-        ) : (
-          <PlayCircleOutlineOutlinedIcon fontSize="large" />
-        )}
-      </Button>
-      {/* current time and total time section */}
+    <Paper sx={styles.container}>
+      {/* PLAY PAUSE NEXT PREV CONATINER */}
+      <Box sx={{ display: "flex", alignItems: "center" }}>
+        {/* PREV SONG BUTTON */}
+        <PlayPasueBtn>
+          <StepBackwardOutlined style={{ fontSize: "35px", color: "white" }} />
+        </PlayPasueBtn>
+        {/* PLAY BUTTON */}
+        <PlayPasueBtn onClick={playPause} sx={{}}>
+          {isPlaying ? (
+            <PauseOutlined style={{ fontSize: "35px", color: "white" }} />
+          ) : (
+            <PlayArrowIcon style={{ fontSize: "40px", color: "white" }} />
+          )}
+        </PlayPasueBtn>
+        {/* NEXT SONG BUTTON */}
+        <PlayPasueBtn>
+          <StepForwardOutlined style={{ fontSize: "35px", color: "white" }} />
+        </PlayPasueBtn>
+      </Box>
+      {/* CURRENT TIME AND TOTAL TIME CONATINER */}
       <Stack flexDirection={"row"} gap={1}>
         <Typography sx={{ fontWeight: "500", color: "#FFFFFF" }}>
           {getTimeInString(currentTime)}
@@ -147,8 +146,29 @@ export function MusicPlayer() {
           {getTimeInString(totalTime)}
         </Typography>
       </Stack>
-      {/* song forward backword slider */}
+
+      {/* CURRENT SONG THUMBNAIL AND TITLE CONATINER */}
+      <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+        {/* CURRENT SONG THUMBNAIL */}
+        <img style={styles.thumbnail} src={currentMusic.thumbnail} />
+        {/* SONG TITLE AND NAME */}
+        <Stack>
+          <Typography variant="h6" sx={{ fontWeight: "500", color: "#FFFFFF" }}>
+            {currentMusic.title}
+          </Typography>
+          <Typography
+            sx={{ fontSize: "12px", fontWeight: "450", color: "#FFFFFF" }}
+          >
+            {currentMusic.artist.map((artist) => artist.name).join(" & ")}
+          </Typography>
+        </Stack>
+        {/* ADD TO LIBRARY */}
+        <FavAddRemove currentMusic={currentMusic} />
+      </Box>
+
+      {/* SONG FORWARD AND BACKWARD SLIDER */}
       <MusicSlider
+        sx={{ width: { xs: 100, sm: 200 } }}
         value={currentTime}
         min={0}
         max={totalTime}
@@ -159,37 +179,30 @@ export function MusicPlayer() {
           audioRef.current.currentTime = e.target.value;
         }}
       />
-      {/* add to the library */}
-      <FavAddRemove currentMusic={currentMusic} />
-      {/* volume forward backword */}
-      <Stack
-        flexDirection={"row"}
-        gap={3}
-        justifyContent={"center"}
-        alignContent={"center"}
-      >
-        <div className="volume-icon">
-          <VolumeUpIcon
-            sx={{
-              cursor: "pointer",
-            }}
-            fontSize="large"
-            htmlColor="white"
-          />
-          <MusicSlider
-            className="volume-slider"
-            value={volume}
-            min={0}
-            max={100}
-            valueLabelDisplay="auto"
-            aria-label="volume slider"
-            onChange={(e) => {
-              setVolume(e.target.value);
-              audioRef.current.volume = e.target.value / 100;
-            }}
-          />
-        </div>
-      </Stack>
+
+      {/* COLUME FORWARD BACKWARD*/}
+      <div className="volume-icon">
+        <MusicSlider
+          sx={{ width: { xs: 100, sm: 100 } }}
+          className="volume-slider"
+          value={volume}
+          min={0}
+          max={100}
+          valueLabelDisplay="auto"
+          aria-label="volume slider"
+          onChange={(e) => {
+            setVolume(e.target.value);
+            audioRef.current.volume = e.target.value / 100;
+          }}
+        />
+        <VolumeUpIcon
+          sx={{
+            cursor: "pointer",
+          }}
+          fontSize="large"
+          htmlColor="white"
+        />
+      </div>
 
       <audio ref={audioRef} src={currentMusic.audio_url} />
     </Paper>
@@ -225,52 +238,29 @@ export function MusicPlayer() {
 
 const styles = {
   container: {
-    height: 120,
+    height: 100,
     position: "fixed",
     bottom: 0,
     left: 0,
     width: "100%",
-    backgroundColor: "#FF894B",
+    backgroundColor: "#212020",
     display: "flex",
     alignItems: "center",
     justifyContent: "flex-start",
     gap: "20px",
+    p: 2,
   },
   thumbnail: {
-    width: 100,
-    height: 100,
-    marginLeft: 40,
+    width: 70,
+    height: 60,
     borderRadius: "5px",
   },
   title: {
     color: "white",
-    // marginBottom: 10,
-  },
-  // titleContainer: {
-  //   padding: 20,
-  //   display: "flex",
-  //   flexDirection: "column",
-  //   justifyContent: "center",
-  //   alignItems: "center",
-  //   width: 300,
-  //   textAlign: "center",
-  // },
-  playPauseButton: {
-    border: "none",
-    backgroundColor: "white",
-    width: 50,
-    height: 50,
-    borderRadius: "50%",
-    fontSize: 26,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    cursor: "pointer",
   },
   timeContainer: {
     display: "flex",
     color: "white",
-    // padding: 20,
     gap: 10,
   },
   slider: {

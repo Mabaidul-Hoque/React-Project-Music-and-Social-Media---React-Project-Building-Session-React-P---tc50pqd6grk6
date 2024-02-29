@@ -26,11 +26,10 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
   bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
+  border: "2px solid white",
   p: 4,
+  borderRadius: "10px",
 };
 
 export function AuthenticationModal({ showModal, setShowModal }) {
@@ -41,13 +40,16 @@ export function AuthenticationModal({ showModal, setShowModal }) {
 
   return (
     <div>
+      {/* BEFORE LOGIN MODAL */}
       <Modal
         open={showModal}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        {/* MODAL CONTENT */}
+        <Box sx={{ ...style, width: { xs: 300, sm: 400 } }}>
+          {/* MODAL CLOSE BTN */}
           <Stack flexDirection={"row"} justifyContent={"flex-end"}>
             <Button
               sx={{
@@ -60,6 +62,7 @@ export function AuthenticationModal({ showModal, setShowModal }) {
               close
             </Button>
           </Stack>
+          {/* MODAL TITLE */}
           <Typography
             id="modal-modal-title"
             variant="h6"
@@ -85,6 +88,7 @@ export function AuthenticationModal({ showModal, setShowModal }) {
           >
             If you don't have any account signup here
           </Typography>
+          {/* SIGNUP BTN */}
           <Stack flexDirection={"row"} justifyContent={"center"}>
             <Button
               variant="contained"

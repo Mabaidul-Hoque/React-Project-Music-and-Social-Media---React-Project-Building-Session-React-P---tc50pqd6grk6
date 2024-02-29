@@ -33,7 +33,7 @@ const FavSongs = () => {
     if (typeof window !== "undefined") {
       localStorage.setItem("favoriteMusic", JSON.stringify(favoriteMusicIds));
     }
-      
+
     setIsFav((prev) => !prev);
   };
 

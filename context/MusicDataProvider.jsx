@@ -19,6 +19,7 @@ const MusicDataProvider = ({ children }) => {
   const [favSongsId, setFavSongsId] = useState([]);
   const [isFav, setIsFav] = useState(false);
   const [searchedSongs, setSearchedSongs] = useState(0);
+  const [currFav, setCurrFav] = useState(null);
 
   const updateMusicList = useCallback(async () => {
     const musicList = await fetchMusicList(musicPage, 10);
@@ -42,6 +43,7 @@ const MusicDataProvider = ({ children }) => {
       setIsFav,
     },
     searchedData: { searchedSongs, setSearchedSongs },
+    favSongsData: { currFav, setCurrFav },
   };
   return (
     <MusicContext.Provider value={musicData}>{children}</MusicContext.Provider>
