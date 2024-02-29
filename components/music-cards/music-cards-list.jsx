@@ -57,7 +57,8 @@ export function MusicCardsList() {
         {/* pagination */}
         <Stack alignItems={"center"} mt={6} mb={6}>
           <Pagination
-            count={musicList.length < 10 ? 1 : 50}
+            count={musicList.length < 10 ? 1 : 20}
+            siblingCount={0}
             color={"primary"}
             bgcolor={"white"}
             page={musicPage}

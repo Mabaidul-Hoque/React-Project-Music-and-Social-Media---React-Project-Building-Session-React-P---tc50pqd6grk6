@@ -1,18 +1,32 @@
-
 .music-card-list {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: baseline;
-    
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: baseline;
 }
-#music-card:hover #icon{
-    visibility: visible;
+#music-card:hover #icon {
+  visibility: visible;
 }
-.volume-icon:hover .volume-slider{
-    visibility: visible;
+.volume-icon:hover .volume-slider {
+  visibility: visible;
 }
 #icon,
-.volume-slider{
-    visibility: hidden;
+.volume-slider {
+  visibility: hidden;
+}
+.css-1to7aaw-MuiButtonBase-root-MuiPaginationItem-root,
+.css-1v2lvtn-MuiPaginationItem-root {
+  color: white;
+}
+
+@media screen and (max-width: 600px) {
+  .css-wjh20t-MuiPagination-ul {
+    gap: 10px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .css-wjh20t-MuiPagination-ul {
+    gap: 0;
+  }
 }
