@@ -33,7 +33,7 @@ export function MusicCard({ music, onClick }) {
 }
 
 const paperStyle = {
-  width: "17vw",
+  width: "230px",
   height: "40vh",
   borderRadius: "15px",
   bgcolor: "#393939",
