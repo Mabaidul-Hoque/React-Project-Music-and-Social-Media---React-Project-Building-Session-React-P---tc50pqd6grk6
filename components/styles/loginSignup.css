@@ -93,3 +93,11 @@ form button {
 .link a:hover {
   text-decoration: underline;
 }
+
+@media screen and (max-width: 420px) {
+  .login-form,
+  .signup-form {
+    width: 280px;
+    padding: 20px 20px 20px;
+  }
+}

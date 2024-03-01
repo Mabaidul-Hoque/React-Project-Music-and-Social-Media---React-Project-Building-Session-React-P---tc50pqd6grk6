@@ -14,11 +14,13 @@ import PageRoutes from "./PageRoutes";
 import CloseIcon from "@mui/icons-material/Close";
 
 const SearchButton = styled("button")({
-  width: "42px",
+  width: "48px",
   height: "40px",
   minWidth: "20px",
   backgroundColor: "#FFFFFF",
-  borderRadius: "50%",
+  borderTopRightRadius: "18px",
+  borderBottomRightRadius: "18px",
+  borderLeft: "1px solid ",
   border: "none",
   cursor: "pointer",
   "&:hover": {
@@ -32,8 +34,10 @@ const SearchButton = styled("button")({
 const SearchInput = styled("input")({
   height: "40px",
   border: "none",
-  borderRadius: "20px",
-  paddingLeft: "20px",
+  borderRight: "1px solid gray",
+  borderTopLeftRadius: "18px",
+  borderBottomLeftRadius: "18px",
+  paddingLeft: "25px",
   paddingRight: "40px",
   fontSize: "16px",
   outlineColor: "#FFFFFF",
@@ -196,8 +200,8 @@ export function Header() {
           onChange={(e) => setSearchInput(e.target.value)}
           onFocus={() => setSearchInput("")}
         />
-        <SearchButton sx={{ marginLeft: "-50px" }} onClick={handleSearch}>
-          <SearchOutlinedIcon htmlColor="gray" />
+        <SearchButton onClick={handleSearch}>
+          <SearchOutlinedIcon fontSize="medium" htmlColor="gray" />
         </SearchButton>
       </Stack>
       {/* LOGIN/LOGOUT CONTAINER */}
