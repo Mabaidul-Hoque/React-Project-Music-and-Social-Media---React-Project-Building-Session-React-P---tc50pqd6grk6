@@ -6,9 +6,9 @@
 }
 .volume-icon {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   gap: 15px;
+  /* margin-right: -50px; */
 }
 #music-card:hover #icon {
   visibility: visible;

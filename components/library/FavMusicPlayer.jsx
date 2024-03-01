@@ -1,24 +1,26 @@
 "use client";
 import "../styles/musicStyle.css";
 import {
-  Box,
   Button,
   Paper,
   Slider,
   Stack,
   Typography,
   styled,
+  Box,
 } from "@mui/material";
-
-import { useRouter } from "next/navigation";
 import { useContext, useEffect, useRef, useState } from "react";
 import PlayCircleOutlineOutlinedIcon from "@mui/icons-material/PlayCircleOutlineOutlined";
 import PauseCircleOutlineIcon from "@mui/icons-material/PauseCircleOutline";
-
 import { useMusicContext } from "@/context/MusicDataProvider";
-
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import { TokenContext } from "@/context/AuthProvider";
+import {
+  PauseOutlined,
+  StepBackwardOutlined,
+  StepForwardOutlined,
+} from "@ant-design/icons";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 
 const MusicSlider = styled(Slider)({
   color: "#0C936C",
@@ -40,6 +42,13 @@ const MusicSlider = styled(Slider)({
       display: "none",
     },
   },
+});
+const PlayPasueBtn = styled(Button)({
+  p: 0,
+  width: "fit-content",
+  "&:hover": { bgcolor: "#212020", color: "#212020" },
+  "&:focus": { bgcolor: "#212020", color: "#212020" },
+  "&:active": { bgcolor: "#212020", color: "#212020" },
 });
 
 export function FavMusicPlayer() {
@@ -108,123 +117,141 @@ export function FavMusicPlayer() {
   if (!currFav) return null;
 
   return (
-    <Paper style={styles.container}>
-      {/* current music thumbnail */}
-      <img style={styles.thumbnail} src={currFav.thumbnail} />
-      {/* song title and artist name */}
-      <Stack textAlign={"center"}>
-        <Typography variant="h5" sx={{ fontWeight: "700", color: "#FFFFFF" }}>
-          {currFav.title}
-        </Typography>
-        <Typography
-          sx={{ fontSize: "14px", fontWeight: "600", color: "#FFFFFF" }}
-        >
-          {currFav.artist.map((artist) => artist.name).join(" & ")}
-        </Typography>
-      </Stack>
-      {/* play btn */}
-      <Button
-        onClick={playPause}
+    <Paper
+      sx={{
+        ...styles.container,
+        height: { xs: 200, md: 100 },
+        gap: { xs: 0, md: "20px" },
+      }}
+    >
+      <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+        {/* PLAY PAUSE NEXT PREV CONATINER */}
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          {/* PREV SONG BUTTON */}
+          <StepBackwardOutlined
+            style={{ fontSize: "35px", color: "white", cursor: "no-drop" }}
+          />
+          {/* PLAY BUTTON */}
+          <PlayPasueBtn onClick={playPause}>
+            {isPlaying ? (
+              <PauseOutlined style={{ fontSize: "35px", color: "white" }} />
+            ) : (
+              <PlayArrowIcon style={{ fontSize: "40px", color: "white" }} />
+            )}
+          </PlayPasueBtn>
+          {/* NEXT SONG BUTTON */}
+          <StepForwardOutlined
+            style={{ fontSize: "35px", color: "white", cursor: "no-drop" }}
+          />
+        </Box>
+        {/* CURRENT TIME AND TOTAL TIME CONATINER */}
+        <Stack flexDirection={"row"} gap={1}>
+          <Typography sx={{ fontWeight: "500", color: "#FFFFFF" }}>
+            {getTimeInString(currentTime)}
+          </Typography>
+          <Typography sx={{ fontWeight: "500", color: "#FFFFFF" }}>
+            /
+          </Typography>
+          <Typography sx={{ fontWeight: "500", color: "#FFFFFF" }}>
+            {getTimeInString(totalTime)}
+          </Typography>
+        </Stack>
+      </Box>
+      {/* CURRENT SONG THUMBNAIL AND TITLE CONATINER */}
+      <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+        {/* current music thumbnail */}
+        <img style={styles.thumbnail} src={currFav.thumbnail} />
+        {/* song title and artist name */}
+        <Stack textAlign={"center"}>
+          <Typography variant="h6" sx={{ fontWeight: "500", color: "#FFFFFF" }}>
+            {currFav.title}
+          </Typography>
+          <Typography
+            sx={{ fontSize: "12px", fontWeight: "450", color: "#FFFFFF" }}
+          >
+            {currFav.artist.map((artist) => artist.name).join(" & ")}
+          </Typography>
+        </Stack>
+      </Box>
+      {/* SLIDERS CONTAINER */}
+      <Box
         sx={{
-          width: "4rem",
+          display: "flex",
+          flexDirection: { xs: "row", sm: "column" },
+          alignItems: "center",
         }}
       >
-        {isPlaying ? (
-          <PauseCircleOutlineIcon fontSize="large" />
-        ) : (
-          <PlayCircleOutlineOutlinedIcon fontSize="large" />
-        )}
-      </Button>
-      {/* current time and total time section */}
-      <Stack flexDirection={"row"} gap={1}>
-        <Typography sx={{ fontWeight: "500", color: "#FFFFFF" }}>
-          {getTimeInString(currentTime)}
-        </Typography>
-        <Typography sx={{ fontWeight: "500", color: "#FFFFFF" }}>/</Typography>
-        <Typography sx={{ fontWeight: "500", color: "#FFFFFF" }}>
-          {getTimeInString(totalTime)}
-        </Typography>
-      </Stack>
-      {/* song forward backword slider */}
-      <MusicSlider
-        value={currentTime}
-        min={0}
-        max={totalTime}
-        valueLabelDisplay="auto"
-        aria-label="time slider"
-        onChange={(e) => {
-          setCurrentTime(e.target.value);
-          audioRef.current.currentTime = e.target.value;
-        }}
-      />
-      {/* volume forward backword */}
-      <Stack
-        flexDirection={"row"}
-        gap={3}
-        justifyContent={"center"}
-        alignContent={"center"}
-      >
-        <div className="volume-icon">
-          <VolumeUpIcon
-            sx={{
-              cursor: "pointer",
-            }}
-            fontSize="large"
-            htmlColor="white"
-          />
-          <MusicSlider
-            className="volume-slider"
-            value={volume}
-            min={0}
-            max={100}
-            valueLabelDisplay="auto"
-            aria-label="volume slider"
-            onChange={(e) => {
-              setVolume(e.target.value);
-              audioRef.current.volume = e.target.value / 100;
-            }}
-          />
-        </div>
-      </Stack>
-
-      <audio ref={audioRef} src={currFav.audio_url} />
+        {/* song forward backword slider */}
+        <MusicSlider
+          sx={{ width: { xs: 100, sm: 200 } }}
+          value={currentTime}
+          min={0}
+          max={totalTime}
+          valueLabelDisplay="auto"
+          aria-label="time slider"
+          onChange={(e) => {
+            setCurrentTime(e.target.value);
+            audioRef.current.currentTime = e.target.value;
+          }}
+        />
+        {/* volume forward backword */}
+        <Stack
+          flexDirection={"row"}
+          gap={3}
+          justifyContent={"center"}
+          alignContent={"center"}
+        >
+          <div className="volume-icon">
+            <VolumeUpIcon
+              sx={{
+                cursor: "pointer",
+              }}
+              fontSize="large"
+              htmlColor="white"
+            />
+            <MusicSlider
+              sx={{ width: { xs: 100, sm: 180 } }}
+              className="volume-slider"
+              value={volume}
+              min={0}
+              max={100}
+              valueLabelDisplay="auto"
+              aria-label="volume slider"
+              onChange={(e) => {
+                setVolume(e.target.value);
+                audioRef.current.volume = e.target.value / 100;
+              }}
+            />
+          </div>
+        </Stack>
+        <audio ref={audioRef} src={currFav.audio_url} />
+      </Box>
     </Paper>
   );
 }
 
 const styles = {
   container: {
-    height: 120,
+    height: 100,
     position: "fixed",
     bottom: 0,
     left: 0,
     width: "100%",
-    backgroundColor: "#FF894B",
+    backgroundColor: "#212020",
     display: "flex",
     alignItems: "center",
-    justifyContent: "flex-start",
+    justifyContent: "space-between",
     gap: "20px",
+    flexWrap: "wrap",
+    p: 2,
   },
   thumbnail: {
-    width: 100,
-    height: 100,
-    marginLeft: 40,
+    width: 70,
+    height: 60,
     borderRadius: "5px",
   },
   title: {
     color: "white",
-  },
-  playPauseButton: {
-    border: "none",
-    backgroundColor: "white",
-    width: 50,
-    height: 50,
-    borderRadius: "50%",
-    fontSize: 26,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    cursor: "pointer",
   },
   timeContainer: {
     display: "flex",
