@@ -3,7 +3,15 @@ import { Box } from "@mui/material";
 export default function Loading() {
   // You can add any UI inside Loading, including a Skeleton.
   return (
-    <>
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        width: "100vw",
+        height: "80vh",
+      }}
+    >
       <h1
         style={{
           color: "white",
@@ -15,6 +23,6 @@ export default function Loading() {
       >
         Loading...
       </h1>
-    </>
+    </Box>
   );
 }

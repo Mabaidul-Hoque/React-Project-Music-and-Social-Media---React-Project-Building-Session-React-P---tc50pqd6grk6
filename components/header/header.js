@@ -181,7 +181,7 @@ export function Header() {
           </>
         </Modal>
       </Box>
-      {/* PAGES ROUTES */}
+      {/* PAGE ROUTES */}
       <Box sx={{ display: { xs: "none", md: "flex" }, gap: 4 }}>
         <PageRoutes
           onHomeClick={handleHomeClick}
@@ -193,7 +193,7 @@ export function Header() {
       {/* MUSIC SEARCH CONTAINER  */}
       <Stack sx={{ flexDirection: "row", alignItems: "center" }}>
         <SearchInput
-          sx={{ width: { xs: "50vw", md: "20vw" } }}
+          sx={{ width: { xs: "30vw", md: "20vw" } }}
           id="outlined-basic"
           placeholder="Search songs"
           value={searchInput}

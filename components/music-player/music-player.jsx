@@ -21,6 +21,7 @@ import {
   StepForwardOutlined,
 } from "@ant-design/icons";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 
 const MusicSlider = styled(Slider)({
   color: "#0C936C",
@@ -59,7 +60,17 @@ export function MusicPlayer() {
   const audioRef = useRef();
   const { token } = useContext(TokenContext);
   const router = useRouter();
-  const { currentMusic } = useMusicContext().musicVal;
+  const { currentMusic, setCurrentMusic, musicList } =
+    useMusicContext().musicVal;
+
+  const prevNextMusic = (text) => {
+    const indexOfCurr = musicList.indexOf(currentMusic);
+    if (text === "next") {
+      setCurrentMusic(musicList[indexOfCurr + 1]);
+    } else if (text === "prev") {
+      setCurrentMusic(musicList[indexOfCurr - 1]);
+    }
+  };
 
   const getTimeInString = (time) => {
     const minutes = String(parseInt(time / 60));
@@ -129,7 +140,8 @@ export function MusicPlayer() {
         <Box sx={{ display: "flex", alignItems: "center" }}>
           {/* PREV SONG BUTTON */}
           <StepBackwardOutlined
-            style={{ fontSize: "35px", color: "white", cursor: "no-drop" }}
+            onClick={() => prevNextMusic("prev")}
+            style={{ fontSize: "35px", color: "white" }}
           />
           {/* PLAY BUTTON */}
           <PlayPasueBtn onClick={playPause}>
@@ -141,7 +153,8 @@ export function MusicPlayer() {
           </PlayPasueBtn>
           {/* NEXT SONG BUTTON */}
           <StepForwardOutlined
-            style={{ fontSize: "35px", color: "white", cursor: "no-drop" }}
+            onClick={() => prevNextMusic("next")}
+            style={{ fontSize: "35px", color: "white" }}
           />
         </Box>
         {/* CURRENT TIME AND TOTAL TIME CONATINER */}
@@ -213,13 +226,35 @@ export function MusicPlayer() {
               audioRef.current.volume = e.target.value / 100;
             }}
           />
-          <VolumeUpIcon
-            sx={{
-              cursor: "pointer",
-            }}
-            fontSize="large"
-            htmlColor="white"
-          />
+          {volume === 0 ? (
+            <VolumeOffIcon
+              onClick={() => {
+                setVolume(() => {
+                  if (volume === 0) return audioRef.current.volume * 100;
+                });
+                audioRef.current.volume = 1;
+              }}
+              sx={{
+                cursor: "pointer",
+              }}
+              fontSize="large"
+              htmlColor="white"
+            />
+          ) : (
+            <VolumeUpIcon
+              onClick={() => {
+                setVolume(() => {
+                  if (volume > 0) return 0;
+                });
+                audioRef.current.volume = 0;
+              }}
+              sx={{
+                cursor: "pointer",
+              }}
+              fontSize="large"
+              htmlColor="white"
+            />
+          )}
         </div>
 
         <audio ref={audioRef} src={currentMusic.audio_url} />
@@ -227,22 +262,27 @@ export function MusicPlayer() {
     </Paper>
   ) : (
     // if user not logged in show this
-    <Stack
-      style={styles.container}
-      flexDirection={"row"}
-      justifyContent={"flex-start"}
-      pl={5}
+    <Box
+      sx={{
+        ...styles.container,
+        pl: { xs: 1, sm: 5 },
+        justifyContent: "center",
+        gap: 2,
+        flexWrap: "nowrap",
+      }}
     >
       <img
-        width={"80px"}
+        width={"70px"}
+        height={"70px"}
         src={currentMusic.thumbnail}
         alt={currentMusic.title}
       />
-      <Typography variant="h4" color={"white"}>
-        Please sign up first
-      </Typography>
-      <Box mr={90}>
+      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
+        <Typography variant="h6" color={"white"}>
+          Please sign up first
+        </Typography>
         <Button
+          sx={{ textTransform: "none" }}
           variant="contained"
           onClick={() => {
             router.push("/signup");
@@ -251,7 +291,7 @@ export function MusicPlayer() {
           Sign up here
         </Button>
       </Box>
-    </Stack>
+    </Box>
   );
 }
 
